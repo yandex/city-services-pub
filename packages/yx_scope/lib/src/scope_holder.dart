@@ -213,7 +213,7 @@ abstract class DataScopeHolder<Container extends DataScopeContainer<Data>,
 /// If you need to differentiate [BaseScopeContainer] and it's abstract interface
 /// then you better use [BaseChildDataScopeHolder] directly.
 abstract class ChildDataScopeHolder<
-    Container extends ChildDataScopeContainer<Parent, Data>,
+        Container extends ChildDataScopeContainer<Parent, Data>,
         Parent extends Scope,
         Data extends Object>
     extends BaseChildDataScopeHolder<Container, Container, Parent, Data> {
@@ -338,7 +338,7 @@ abstract class BaseChildScopeHolder<
 abstract class BaseDataScopeHolder<
         Scope,
         Container extends DataScopeContainer<Data>,
-       Data extends Object> extends CoreScopeHolder<Scope, Container>
+        Data extends Object> extends CoreScopeHolder<Scope, Container>
     with _BaseDataScopeHolderMixin<Scope, Container, Data> {
   BaseDataScopeHolder({
     @Deprecated('Use scopeObservers instead')
