@@ -21,9 +21,9 @@ class RegisterScopeHolder
     implements RegisterHolder {
   RegisterScopeHolder(super.parent)
       : super(
-          scopeListeners: [diListener],
-          depListeners: [diListener],
-          asyncDepListeners: [diListener],
+          scopeObservers: [diObserver],
+          depObservers: [diObserver],
+          asyncDepObservers: [diObserver],
         );
 
   @override

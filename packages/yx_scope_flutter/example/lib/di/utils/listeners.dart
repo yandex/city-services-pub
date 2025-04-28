@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:yx_scope/yx_scope.dart';
 
-const diListener = DIListener();
+const diObserver = DIObserver();
 
-class DIListener implements ScopeListener, DepListener, AsyncDepListener {
-  const DIListener();
+class DIObserver implements ScopeObserver, DepObserver, AsyncDepObserver {
+  const DIObserver();
 
   static void _log(
     String message, [

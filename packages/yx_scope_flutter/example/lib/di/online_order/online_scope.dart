@@ -40,9 +40,9 @@ class OnlineScopeHolder extends BaseChildScopeHolder<OnlineScope,
     OnlineScopeContainer, OnlineScopeParent> implements OnlineOrderStateHolder {
   OnlineScopeHolder(super.parent)
       : super(
-          scopeListeners: [diListener],
-          depListeners: [diListener],
-          asyncDepListeners: [diListener],
+          scopeObservers: [diObserver],
+          depObservers: [diObserver],
+          asyncDepObservers: [diObserver],
         );
 
   @override

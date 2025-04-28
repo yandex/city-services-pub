@@ -40,9 +40,9 @@ class AppScopeContainer extends ScopeContainer {
 class AppScopeHolder extends ScopeHolder<AppScopeContainer> {
   AppScopeHolder()
       : super(
-          scopeListeners: [diListener],
-          depListeners: [diListener],
-          asyncDepListeners: [diListener],
+          scopeObservers: [diObserver],
+          depObservers: [diObserver],
+          asyncDepObservers: [diObserver],
         );
 
   @override

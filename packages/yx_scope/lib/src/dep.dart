@@ -30,7 +30,7 @@ class Dep<Value> {
 
   final BaseScopeContainer _scope;
   final DepBuilder<Value> _builder;
-  final DepListenerInternal? _listener;
+  final DepObserverInternal? _observer;
 
   late final DepId _id;
 
@@ -42,9 +42,9 @@ class Dep<Value> {
     this._scope,
     this._builder, {
     String? name,
-    DepListenerInternal? listener,
+    DepObserverInternal? observer,
   })  : _name = name,
-        _listener = listener {
+        _observer = observer {
     _id = DepId(Value, hashCode, _name);
     _scope._registerDep(this);
     _registered = true;
@@ -69,14 +69,14 @@ class Dep<Value> {
       return crtValue.value;
     } else {
       try {
-        _listener?.onValueStartCreate(this);
+        _observer?.onValueStartCreate(this);
         final newValue = _builder();
 
         _value = _DepValue(newValue);
-        _listener?.onValueCreated(this, newValue);
+        _observer?.onValueCreated(this, newValue);
         return newValue;
       } on Object catch (e, s) {
-        _listener?.onValueCreateFailed(this, e, s);
+        _observer?.onValueCreateFailed(this, e, s);
         rethrow;
       }
     }
@@ -92,7 +92,7 @@ class Dep<Value> {
     }
     final value = _value?.value;
     _value = null;
-    _listener?.onValueCleared(this, value);
+    _observer?.onValueCleared(this, value);
     _registered = false;
   }
 }
@@ -103,7 +103,7 @@ class AsyncDep<Value> extends Dep<Value> {
   final AsyncDepCallback<Value> _initCallback;
   final AsyncDepCallback<Value> _disposeCallback;
 
-  final AsyncDepListenerInternal? _asyncDepListener;
+  final AsyncDepObserverInternal? _asyncDepObserver;
 
   var _initialized = false;
 
@@ -113,21 +113,21 @@ class AsyncDep<Value> extends Dep<Value> {
     required AsyncDepCallback<Value> init,
     required AsyncDepCallback<Value> dispose,
     String? name,
-    AsyncDepListenerInternal? listener,
+    AsyncDepObserverInternal? observer,
   })  : _initCallback = init,
         _disposeCallback = dispose,
-        _asyncDepListener = listener,
-        super._(scope, builder, name: name, listener: listener);
+        _asyncDepObserver = observer,
+        super._(scope, builder, name: name, observer: observer);
 
   Future<void> _init() async {
     final value = super.get;
     try {
-      _asyncDepListener?.onDepStartInitialize(this);
+      _asyncDepObserver?.onDepStartInitialize(this);
       await _initCallback(value);
       _initialized = true;
-      _asyncDepListener?.onDepInitialized(this);
+      _asyncDepObserver?.onDepInitialized(this);
     } on Object catch (e, s) {
-      _asyncDepListener?.onDepInitializeFailed(this, e, s);
+      _asyncDepObserver?.onDepInitializeFailed(this, e, s);
       rethrow;
     }
   }
@@ -140,11 +140,11 @@ class AsyncDep<Value> extends Dep<Value> {
     final value = get;
     try {
       _initialized = false;
-      _asyncDepListener?.onDepStartDispose(this);
+      _asyncDepObserver?.onDepStartDispose(this);
       await _disposeCallback(value);
-      _asyncDepListener?.onDepDisposed(this);
+      _asyncDepObserver?.onDepDisposed(this);
     } on Object catch (e, s) {
-      _asyncDepListener?.onDepDisposeFailed(this, e, s);
+      _asyncDepObserver?.onDepDisposeFailed(this, e, s);
       rethrow;
     }
   }

@@ -11,7 +11,7 @@ void main() {
   });
 
   test('success calls in correct order with correct params', () async {
-    final listener = TestListener();
+    final listener = TestObserver();
     final holder = _TestScopeHolder(listener);
 
     await holder.create();
@@ -98,7 +98,7 @@ void main() {
   });
 
   test('init failure calls in correct order with correct params', () async {
-    final listener = TestListener();
+    final listener = TestObserver();
     final holder = _BrokenAsyncDepScopeHolder(listener);
 
     try {
@@ -204,7 +204,7 @@ void main() {
   });
 
   test('dispose calls in correct order with correct params', () async {
-    final listener = TestListener();
+    final listener = TestObserver();
     final holder = _BrokenAsyncDepScopeHolder(listener, checkDispose: true);
 
     await holder.create();
@@ -324,7 +324,7 @@ void main() {
   });
 
   test('create failure calls in correct order with correct params', () async {
-    final listener = TestListener();
+    final listener = TestObserver();
     final holder = _BrokenAsyncDepScopeHolder(listener, checkDispose: true);
 
     await holder.create();
@@ -468,7 +468,7 @@ void main() {
   });
 }
 
-class ListenerEvent {
+class ObserverEvent {
   final String name;
   final ScopeId scope;
   final DepId? dep;
@@ -476,7 +476,7 @@ class ListenerEvent {
   final Object? exception;
   final StackTrace? stackTrace;
 
-  ListenerEvent({
+  ObserverEvent({
     required this.name,
     required this.scope,
     this.dep,
@@ -487,14 +487,14 @@ class ListenerEvent {
 
   @override
   String toString() =>
-      'ListenerEvent{name: $name, scope: $scope, dep: $dep, value: $value, '
+      'ObserverEvent{name: $name, scope: $scope, dep: $dep, value: $value, '
       'exception: $exception, stackTrace: $stackTrace}';
 }
 
-class TestListener implements ScopeListener, DepListener, AsyncDepListener {
-  final _events = <ListenerEvent>[];
+class TestObserver implements ScopeObserver, DepObserver, AsyncDepObserver {
+  final _events = <ObserverEvent>[];
 
-  TestListener();
+  TestObserver();
 
   void _log(
     String name,
@@ -509,7 +509,7 @@ class TestListener implements ScopeListener, DepListener, AsyncDepListener {
       print('$exception\n$stackTrace');
     }
     _events.add(
-      ListenerEvent(
+      ObserverEvent(
         name: name,
         scope: scope,
         dep: dep,
@@ -647,11 +647,11 @@ class _TestScopeContainer extends ScopeContainer {
 }
 
 class _TestScopeHolder extends ScopeHolder<_TestScopeContainer> {
-  _TestScopeHolder(TestListener listener)
+  _TestScopeHolder(TestObserver listener)
       : super(
-          scopeListeners: [listener],
-          depListeners: [listener],
-          asyncDepListeners: [listener],
+          scopeObservers: [listener],
+          depObservers: [listener],
+          asyncDepObservers: [listener],
         );
 
   @override
@@ -693,11 +693,11 @@ class _BrokenAsyncDepScopeHolder
     extends ScopeHolder<_BrokenAsyncDepScopeContainer> {
   final bool checkDispose;
 
-  _BrokenAsyncDepScopeHolder(TestListener listener, {this.checkDispose = false})
+  _BrokenAsyncDepScopeHolder(TestObserver listener, {this.checkDispose = false})
       : super(
-          scopeListeners: [listener],
-          depListeners: [listener],
-          asyncDepListeners: [listener],
+          scopeObservers: [listener],
+          depObservers: [listener],
+          asyncDepObservers: [listener],
         );
 
   @override

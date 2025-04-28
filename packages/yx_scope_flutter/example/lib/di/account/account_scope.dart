@@ -80,9 +80,9 @@ class AccountScopeHolder extends BaseChildDataScopeHolder<
     Account> implements AccountHolder {
   AccountScopeHolder(super.parent)
       : super(
-          scopeListeners: [diListener],
-          depListeners: [diListener],
-          asyncDepListeners: [diListener],
+          scopeObservers: [diObserver],
+          depObservers: [diObserver],
+          asyncDepObservers: [diObserver],
         );
 
   @override

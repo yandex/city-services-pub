@@ -102,9 +102,9 @@ class OrderScopeHolder extends BaseChildDataScopeHolder<OrderScope,
     OrderScopeContainer, OrderScopeParent, Order> {
   OrderScopeHolder(super.parent)
       : super(
-          scopeListeners: [diListener],
-          depListeners: [diListener],
-          asyncDepListeners: [diListener],
+          scopeObservers: [diObserver],
+          depObservers: [diObserver],
+          asyncDepObservers: [diObserver],
         );
 
   @override

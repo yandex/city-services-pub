@@ -45,9 +45,9 @@ class MapNavigationScopeHolder extends BaseChildDataScopeHolder<
     MapNavigationParams> implements MapNavigationHolder {
   MapNavigationScopeHolder(super.parent)
       : super(
-          scopeListeners: [diListener],
-          depListeners: [diListener],
-          asyncDepListeners: [diListener],
+          scopeObservers: [diObserver],
+          depObservers: [diObserver],
+          asyncDepObservers: [diObserver],
         );
 
   @override

@@ -50,9 +50,9 @@ class MapScopeHolder
     implements MapInitializer {
   MapScopeHolder()
       : super(
-          scopeListeners: [diListener],
-          depListeners: [diListener],
-          asyncDepListeners: [diListener],
+          scopeObservers: [diObserver],
+          depObservers: [diObserver],
+          asyncDepObservers: [diObserver],
         );
 
   @override

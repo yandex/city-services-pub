@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
 import 'package:yx_scope/advanced.dart';
+import 'package:yx_scope/src/monitoring/raw_observers.dart';
 import 'package:yx_scope/yx_scope.dart';
 
 import 'utils/test_logger.dart';
 import 'utils/utils.dart';
 
 void main() {
-  final listener = _TestListener();
+  final observer = _TestObserver();
 
   setUp(() {
     _TestDep.instances.clear();
@@ -14,16 +15,16 @@ void main() {
     _TestAsyncDep.instances.clear();
     ScopeObservatory.logger = const TestLogger();
 
-    RawScopeListener.override = listener;
-    RawDepListener.override = listener;
-    RawAsyncDepListener.override = listener;
+    RawScopeObserver.override = observer;
+    RawDepObserver.override = observer;
+    RawAsyncDepObserver.override = observer;
   });
 
   tearDown(() {
-    listener.scopeDeps.clear();
-    RawScopeListener.override = null;
-    RawDepListener.override = null;
-    RawAsyncDepListener.override = null;
+    observer.scopeDeps.clear();
+    RawScopeObserver.override = null;
+    RawDepObserver.override = null;
+    RawAsyncDepObserver.override = null;
   });
 
   group('sync dependencies', () {
@@ -47,11 +48,11 @@ void main() {
 
     test('dep is registered in observer lazily', () {
       final scope = _TestScope();
-      expect(listener.scopeDeps['_TestScope'], isNull);
+      expect(observer.scopeDeps['_TestScope'], isNull);
 
       final dep = scope.myDep.get;
       expect(
-        listener.scopeDeps['_TestScope']?.first,
+        observer.scopeDeps['_TestScope']?.first,
         dep.runtimeType.toString(),
       );
     });
@@ -60,24 +61,24 @@ void main() {
         'dependencies with the same type but different names'
         ' is registered separately in observer', () {
       final scope = _TestScope();
-      expect(listener.scopeDeps['_TestScope'], isNull);
+      expect(observer.scopeDeps['_TestScope'], isNull);
 
       final dep1 = scope.myDep.get;
       expect(
-        listener.scopeContainsDep('_TestScope', dep1.runtimeType.toString()),
+        observer.scopeContainsDep('_TestScope', dep1.runtimeType.toString()),
         isTrue,
       );
 
       final dep2 = scope.myDuplicatedDep.get;
       expect(
-        listener.scopeContainsDep('_TestScope', dep2.runtimeType.toString()),
+        observer.scopeContainsDep('_TestScope', dep2.runtimeType.toString()),
         isTrue,
       );
     });
 
     test('dep returns non-nullable value', () {
       final scope = _TestScope();
-      expect(listener.scopeDeps['_TestScope'], isNull);
+      expect(observer.scopeDeps['_TestScope'], isNull);
 
       final dep = scope.myNullableDep.get;
       expect(
@@ -85,7 +86,7 @@ void main() {
         isNotNull,
       );
       expect(
-        listener.scopeDeps['_TestScope']?.first
+        observer.scopeDeps['_TestScope']?.first
             .startsWith(dep.runtimeType.toString()),
         isTrue,
       );
@@ -93,7 +94,7 @@ void main() {
 
     test('dep returns null value', () {
       final scope = _TestScope(isNullableDep: true);
-      expect(listener.scopeDeps['_TestScope'], isNull);
+      expect(observer.scopeDeps['_TestScope'], isNull);
 
       final dep = scope.myNullableDep.get;
       expect(
@@ -253,10 +254,10 @@ class _TestAsyncDepScopeHolder extends ScopeHolder<_TestAsyncDepScope> {
   _TestAsyncDepScope createContainer() => _TestAsyncDepScope();
 }
 
-class _TestListener implements RawScopeListener, RawAsyncDepListener {
+class _TestObserver implements RawScopeObserver, RawAsyncDepObserver {
   final scopeDeps = <String, Set<String>>{};
 
-  _TestListener();
+  _TestObserver();
 
   @override
   void onDepDisposeFailed(

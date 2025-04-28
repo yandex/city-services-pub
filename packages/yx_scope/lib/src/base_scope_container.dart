@@ -6,11 +6,11 @@ import 'package:meta/meta.dart';
 import 'core/async_lifecycle.dart';
 import 'core/scope_exception.dart';
 import 'core/scope_state.dart';
-import 'monitoring/listeners.dart';
+import 'monitoring/observers.dart';
 import 'monitoring/models/dep_id.dart';
 import 'monitoring/models/scope_id.dart';
 import 'monitoring/models/value_meta.dart';
-import 'monitoring/raw_listeners.dart';
+import 'monitoring/raw_observers.dart';
 import 'monitoring/scope_observatory_internal.dart';
 import 'scope_container.dart';
 import 'scope_state_streamable.dart';
@@ -22,6 +22,8 @@ part 'core_scope_holder.dart';
 part 'dep.dart';
 
 part 'monitoring/listeners_internal.dart';
+
+part 'monitoring/observers_internal.dart';
 
 part 'monitoring/models/scope_meta.dart';
 
@@ -70,15 +72,15 @@ abstract class BaseScopeContainer extends Scope {
   final String? _name;
   late final ScopeId _id;
 
-  late final DepListenerInternal _depListener;
-  late final AsyncDepListenerInternal _asyncDepListener;
+  late final DepObserverInternal _depObserver;
+  late final AsyncDepObserverInternal _asyncDepObserver;
 
   BaseScopeContainer({String? name})
       : _name = name,
         super._() {
     _id = ScopeId(runtimeType, hashCode, _name);
-    _depListener = DepListenerInternal(this);
-    _asyncDepListener = AsyncDepListenerInternal(this);
+    _depObserver = DepObserverInternal(this);
+    _asyncDepObserver = AsyncDepObserverInternal(this);
   }
 
   /// A queue of the initialization for [AsyncDep].
@@ -118,7 +120,7 @@ abstract class BaseScopeContainer extends Scope {
     DepBuilder<Value> builder, {
     String? name,
   }) =>
-      Dep._(this, builder, name: name, listener: _depListener);
+      Dep._(this, builder, name: name, observer: _depObserver);
 
   /// Exactly the same as [BaseScopeContainer.dep] but you only allowed
   /// to declare [AsyncLifecycle] dependencies using this method.
@@ -160,7 +162,7 @@ abstract class BaseScopeContainer extends Scope {
         init: init,
         dispose: dispose,
         name: name,
-        listener: _asyncDepListener,
+        observer: _asyncDepObserver,
       );
 
   void _registerDep(Dep dep) => _container.add(dep);
@@ -206,7 +208,7 @@ mixin ChildScopeContainerMixin<Parent extends Scope> on BaseScopeContainer {
 /// If the scope has data, you can access
 /// it as a non-nullable value within current scope.
 /// {@endtemplate}
-mixin DataScopeContainerMixin<Data extends Object> on BaseScopeContainer {
+mixin DataScopeContainerMixin<Data> on BaseScopeContainer {
   Data? _data;
 
   /// Must not be used anyone except for the child with this mixin.

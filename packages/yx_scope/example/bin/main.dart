@@ -31,16 +31,16 @@ class AppScopeContainer extends ScopeContainer {
 }
 
 class AppScopeHolder extends ScopeHolder<AppScopeContainer> {
-  static const _listener = AppListener();
+  static const _observer = AppListener();
 
   AppScopeHolder()
-      : super(scopeListeners: [_listener], depListeners: [_listener]);
+      : super(scopeObservers: [_observer], depObservers: [_observer]);
 
   @override
   AppScopeContainer createContainer() => AppScopeContainer();
 }
 
-class AppListener implements ScopeListener, DepListener {
+class AppListener implements ScopeObserver, DepObserver {
   const AppListener();
 
   static void _log(

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 part of 'base_scope_container.dart';
 
 /// Simple holder for creating [BaseScopeHolder].
@@ -43,10 +45,24 @@ part of 'base_scope_container.dart';
 abstract class ScopeHolder<Container extends ScopeContainer>
     extends BaseScopeHolder<Container, Container> {
   ScopeHolder({
+    @Deprecated('Use scopeObservers instead')
     List<ScopeListener>? scopeListeners,
-    List<DepListener>? depListeners,
+    @Deprecated('Use depObservers instead') List<DepListener>? depListeners,
+    @Deprecated('Use asyncDepObservers instead')
     List<AsyncDepListener>? asyncDepListeners,
-  }) : super(
+    List<ScopeObserver>? scopeObservers,
+    List<DepObserver>? depObservers,
+    List<AsyncDepObserver>? asyncDepObservers,
+  })  : assert(!(scopeListeners != null && scopeObservers != null),
+            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
+        assert(!(depListeners != null && depObservers != null),
+            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
+        assert(!(asyncDepListeners != null && asyncDepObservers != null),
+            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
+        super(
+          scopeObservers: scopeObservers,
+          depObservers: depObservers,
+          asyncDepObservers: asyncDepObservers,
           scopeListeners: scopeListeners,
           depListeners: depListeners,
           asyncDepListeners: asyncDepListeners,
@@ -89,11 +105,25 @@ abstract class ChildScopeHolder<Container extends ChildScopeContainer<Parent>,
     extends BaseChildScopeHolder<Container, Container, Parent> {
   ChildScopeHolder(
     Parent parent, {
+    @Deprecated('Use scopeObservers instead')
     List<ScopeListener>? scopeListeners,
-    List<DepListener>? depListeners,
+    @Deprecated('Use depObservers instead') List<DepListener>? depListeners,
+    @Deprecated('Use asyncDepObservers instead')
     List<AsyncDepListener>? asyncDepListeners,
-  }) : super(
+    List<ScopeObserver>? scopeObservers,
+    List<DepObserver>? depObservers,
+    List<AsyncDepObserver>? asyncDepObservers,
+  })  : assert(!(scopeListeners != null && scopeObservers != null),
+            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
+        assert(!(depListeners != null && depObservers != null),
+            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
+        assert(!(asyncDepListeners != null && asyncDepObservers != null),
+            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
+        super(
           parent,
+          scopeObservers: scopeObservers,
+          depObservers: depObservers,
+          asyncDepObservers: asyncDepObservers,
           scopeListeners: scopeListeners,
           depListeners: depListeners,
           asyncDepListeners: asyncDepListeners,
@@ -122,14 +152,27 @@ abstract class ChildScopeHolder<Container extends ChildScopeContainer<Parent>,
 ///
 /// If you need to differentiate [BaseScopeContainer] and it's abstract interface
 /// then you better use [BaseDataScopeHolder] directly.
-abstract class DataScopeHolder<Container extends DataScopeContainer<Data>,
-        Data extends Object>
+abstract class DataScopeHolder<Container extends DataScopeContainer<Data>, Data>
     extends BaseDataScopeHolder<Container, Container, Data> {
   DataScopeHolder({
+    @Deprecated('Use scopeObservers instead')
     List<ScopeListener>? scopeListeners,
-    List<DepListener>? depListeners,
+    @Deprecated('Use depObservers instead') List<DepListener>? depListeners,
+    @Deprecated('Use asyncDepObservers instead')
     List<AsyncDepListener>? asyncDepListeners,
-  }) : super(
+    List<ScopeObserver>? scopeObservers,
+    List<DepObserver>? depObservers,
+    List<AsyncDepObserver>? asyncDepObservers,
+  })  : assert(!(scopeListeners != null && scopeObservers != null),
+            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
+        assert(!(depListeners != null && depObservers != null),
+            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
+        assert(!(asyncDepListeners != null && asyncDepObservers != null),
+            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
+        super(
+          scopeObservers: scopeObservers,
+          depObservers: depObservers,
+          asyncDepObservers: asyncDepObservers,
           scopeListeners: scopeListeners,
           depListeners: depListeners,
           asyncDepListeners: asyncDepListeners,
@@ -169,17 +212,30 @@ abstract class DataScopeHolder<Container extends DataScopeContainer<Data>,
 /// If you need to differentiate [BaseScopeContainer] and it's abstract interface
 /// then you better use [BaseChildDataScopeHolder] directly.
 abstract class ChildDataScopeHolder<
-        Container extends ChildDataScopeContainer<Parent, Data>,
-        Parent extends Scope,
-        Data extends Object>
-    extends BaseChildDataScopeHolder<Container, Container, Parent, Data> {
+    Container extends ChildDataScopeContainer<Parent, Data>,
+    Parent extends Scope,
+    Data> extends BaseChildDataScopeHolder<Container, Container, Parent, Data> {
   ChildDataScopeHolder(
     Parent parent, {
+    @Deprecated('Use scopeObservers instead')
     List<ScopeListener>? scopeListeners,
-    List<DepListener>? depListeners,
+    @Deprecated('Use depObservers instead') List<DepListener>? depListeners,
+    @Deprecated('Use asyncDepObservers instead')
     List<AsyncDepListener>? asyncDepListeners,
-  }) : super(
+    List<ScopeObserver>? scopeObservers,
+    List<DepObserver>? depObservers,
+    List<AsyncDepObserver>? asyncDepObservers,
+  })  : assert(!(scopeListeners != null && scopeObservers != null),
+            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
+        assert(!(depListeners != null && depObservers != null),
+            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
+        assert(!(asyncDepListeners != null && asyncDepObservers != null),
+            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
+        super(
           parent,
+          scopeObservers: scopeObservers,
+          depObservers: depObservers,
+          asyncDepObservers: asyncDepObservers,
           scopeListeners: scopeListeners,
           depListeners: depListeners,
           asyncDepListeners: asyncDepListeners,
@@ -197,13 +253,24 @@ abstract class ChildDataScopeHolder<
 abstract class BaseScopeHolder<Scope, Container extends ScopeContainer>
     extends CoreScopeHolder<Scope, Container> {
   BaseScopeHolder({
+    @Deprecated('Use scopeObservers instead')
     List<ScopeListener>? scopeListeners,
-    List<DepListener>? depListeners,
+    @Deprecated('Use depObservers instead') List<DepListener>? depListeners,
+    @Deprecated('Use asyncDepObservers instead')
     List<AsyncDepListener>? asyncDepListeners,
-  }) : super(
-          scopeListeners: scopeListeners,
-          depListeners: depListeners,
-          asyncDepListeners: asyncDepListeners,
+    List<ScopeObserver>? scopeObservers,
+    List<DepObserver>? depObservers,
+    List<AsyncDepObserver>? asyncDepObservers,
+  })  : assert(!(scopeListeners != null && scopeObservers != null),
+            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
+        assert(!(depListeners != null && depObservers != null),
+            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
+        assert(!(asyncDepListeners != null && asyncDepObservers != null),
+            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
+        super(
+          scopeObservers: scopeObservers ?? scopeListeners,
+          depObservers: depObservers ?? depListeners,
+          asyncDepObservers: asyncDepObservers ?? asyncDepListeners,
         );
 
   @protected
@@ -230,13 +297,24 @@ abstract class BaseChildScopeHolder<
     with _BaseChildScopeHolderMixin<ScopeType, Container, Parent> {
   BaseChildScopeHolder(
     Parent parent, {
+    @Deprecated('Use scopeObservers instead')
     List<ScopeListener>? scopeListeners,
-    List<DepListener>? depListeners,
+    @Deprecated('Use depObservers instead') List<DepListener>? depListeners,
+    @Deprecated('Use asyncDepObservers instead')
     List<AsyncDepListener>? asyncDepListeners,
-  }) : super(
-          scopeListeners: scopeListeners,
-          depListeners: depListeners,
-          asyncDepListeners: asyncDepListeners,
+    List<ScopeObserver>? scopeObservers,
+    List<DepObserver>? depObservers,
+    List<AsyncDepObserver>? asyncDepObservers,
+  })  : assert(!(scopeListeners != null && scopeObservers != null),
+            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
+        assert(!(depListeners != null && depObservers != null),
+            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
+        assert(!(asyncDepListeners != null && asyncDepObservers != null),
+            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
+        super(
+          scopeObservers: scopeObservers ?? scopeListeners,
+          depObservers: depObservers ?? depListeners,
+          asyncDepObservers: asyncDepObservers ?? asyncDepListeners,
         ) {
     this.parent = parent;
   }
@@ -258,16 +336,27 @@ abstract class BaseChildScopeHolder<
 abstract class BaseDataScopeHolder<
         Scope,
         Container extends DataScopeContainer<Data>,
-        Data extends Object> extends CoreScopeHolder<Scope, Container>
+        Data> extends CoreScopeHolder<Scope, Container>
     with _BaseDataScopeHolderMixin<Scope, Container, Data> {
   BaseDataScopeHolder({
+    @Deprecated('Use scopeObservers instead')
     List<ScopeListener>? scopeListeners,
-    List<DepListener>? depListeners,
+    @Deprecated('Use depObservers instead') List<DepListener>? depListeners,
+    @Deprecated('Use asyncDepObservers instead')
     List<AsyncDepListener>? asyncDepListeners,
-  }) : super(
-          scopeListeners: scopeListeners,
-          depListeners: depListeners,
-          asyncDepListeners: asyncDepListeners,
+    List<ScopeObserver>? scopeObservers,
+    List<DepObserver>? depObservers,
+    List<AsyncDepObserver>? asyncDepObservers,
+  })  : assert(!(scopeListeners != null && scopeObservers != null),
+            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
+        assert(!(depListeners != null && depObservers != null),
+            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
+        assert(!(asyncDepListeners != null && asyncDepObservers != null),
+            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
+        super(
+          scopeObservers: scopeObservers ?? scopeListeners,
+          depObservers: depObservers ?? depListeners,
+          asyncDepObservers: asyncDepObservers ?? asyncDepListeners,
         );
 
   @protected
@@ -291,19 +380,30 @@ abstract class BaseChildDataScopeHolder<
         ScopeType,
         Container extends ChildDataScopeContainer<Parent, Data>,
         Parent extends Scope,
-        Data extends Object> extends CoreScopeHolder<ScopeType, Container>
+        Data> extends CoreScopeHolder<ScopeType, Container>
     with
         _BaseChildScopeHolderMixin<ScopeType, Container, Parent>,
         _BaseDataScopeHolderMixin<ScopeType, Container, Data> {
   BaseChildDataScopeHolder(
     Parent parent, {
+    @Deprecated('Use scopeObservers instead')
     List<ScopeListener>? scopeListeners,
-    List<DepListener>? depListeners,
+    @Deprecated('Use depObservers instead') List<DepListener>? depListeners,
+    @Deprecated('Use asyncDepObservers instead')
     List<AsyncDepListener>? asyncDepListeners,
-  }) : super(
-          scopeListeners: scopeListeners,
-          depListeners: depListeners,
-          asyncDepListeners: asyncDepListeners,
+    List<ScopeObserver>? scopeObservers,
+    List<DepObserver>? depObservers,
+    List<AsyncDepObserver>? asyncDepObservers,
+  })  : assert(!(scopeListeners != null && scopeObservers != null),
+            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
+        assert(!(depListeners != null && depObservers != null),
+            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
+        assert(!(asyncDepListeners != null && asyncDepObservers != null),
+            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
+        super(
+          scopeObservers: scopeObservers ?? scopeListeners,
+          depObservers: depObservers ?? depListeners,
+          asyncDepObservers: asyncDepObservers ?? asyncDepListeners,
         ) {
     this.parent = parent;
   }
@@ -365,4 +465,4 @@ mixin _BaseChildScopeHolderMixin<
 mixin _BaseDataScopeHolderMixin<
     Scope,
     Container extends DataScopeContainerMixin<Data>,
-    Data extends Object> on CoreScopeHolder<Scope, Container> {}
+    Data> on CoreScopeHolder<Scope, Container> {}

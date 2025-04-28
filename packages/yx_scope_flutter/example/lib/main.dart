@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yx_scope/yx_scope.dart' hide ScopeListener;
+import 'package:yx_scope/yx_scope.dart' hide ScopeObserver;
 import 'package:yx_scope_flutter/yx_scope_flutter.dart';
 
 import 'di/app/app_scope.dart';
