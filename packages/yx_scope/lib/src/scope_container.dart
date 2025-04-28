@@ -22,8 +22,8 @@ abstract class ChildScopeContainer<Parent extends Scope>
 }
 
 /// {@macro data_scope_container}
-abstract class DataScopeContainer<Data> extends ScopeContainer
-    with DataScopeContainerMixin<Data> {
+abstract class DataScopeContainer<Data extends Object>
+    extends BaseScopeContainer with DataScopeContainerMixin<Data> {
   DataScopeContainer({
     required Data data,
     String? name,
@@ -40,8 +40,8 @@ abstract class DataScopeContainer<Data> extends ScopeContainer
 ///
 /// [DataScopeContainer]:
 /// {@macro data_scope_container}
-abstract class ChildDataScopeContainer<Parent extends Scope, Data>
-    extends BaseScopeContainer
+abstract class ChildDataScopeContainer<Parent extends Scope,
+        Data extends Object> extends BaseScopeContainer
     with ChildScopeContainerMixin<Parent>, DataScopeContainerMixin<Data> {
   ChildDataScopeContainer({
     required Parent parent,

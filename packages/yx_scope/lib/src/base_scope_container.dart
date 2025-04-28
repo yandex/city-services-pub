@@ -208,7 +208,7 @@ mixin ChildScopeContainerMixin<Parent extends Scope> on BaseScopeContainer {
 /// If the scope has data, you can access
 /// it as a non-nullable value within current scope.
 /// {@endtemplate}
-mixin DataScopeContainerMixin<Data> on BaseScopeContainer {
+mixin DataScopeContainerMixin<Data extends Object> on BaseScopeContainer {
   Data? _data;
 
   /// Must not be used anyone except for the child with this mixin.
