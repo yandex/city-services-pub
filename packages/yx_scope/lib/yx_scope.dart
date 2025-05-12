@@ -2,11 +2,8 @@ library yx_scope;
 
 export 'src/base_scope_container.dart'
     hide
-        ScopeListenerInternal,
         ScopeObserverInternal,
-        DepListenerInternal,
         DepObserverInternal,
-        AsyncDepListenerInternal,
         AsyncDepObserverInternal,
         Entry,
         TestableScopeStateHolder;

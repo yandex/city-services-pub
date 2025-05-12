@@ -21,7 +21,19 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
-  })  : _scopeObserverInternal = ScopeObserverInternal(scopeObservers),
+    // ignore: deprecated_member_use_from_same_package
+    List<ScopeListener>? scopeListeners,
+    // ignore: deprecated_member_use_from_same_package
+    List<DepListener>? depListeners,
+    // ignore: deprecated_member_use_from_same_package
+    List<AsyncDepListener>? asyncDepListeners,
+  })  : assert(!(scopeListeners != null && scopeObservers != null),
+            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
+        assert(!(depListeners != null && depObservers != null),
+            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
+        assert(!(asyncDepListeners != null && asyncDepObservers != null),
+            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
+        _scopeObserverInternal = ScopeObserverInternal(scopeObservers),
         _depObservers = depObservers,
         _asyncDepObservers = asyncDepObservers,
         super(null);
@@ -70,7 +82,7 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
         }
         final completer = Completer.sync();
         _waitLifecycleCompleter = completer;
-        final removeObserver = _scopeStateHolder.listen((state) {
+        final removeListener = _scopeStateHolder.listen((state) {
           if (state == ScopeState.none) {
             completer.complete();
           } else {
@@ -96,7 +108,7 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
           );
         } finally {
           _waitLifecycleCompleter = null;
-          removeObserver();
+          removeListener();
           Logger.debug(
             'Wait for scope dispose has completed, state=$_scopeState',
           );

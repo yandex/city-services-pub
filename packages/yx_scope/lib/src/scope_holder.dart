@@ -53,13 +53,7 @@ abstract class ScopeHolder<Container extends ScopeContainer>
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
-  })  : assert(!(scopeListeners != null && scopeObservers != null),
-            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
-        assert(!(depListeners != null && depObservers != null),
-            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
-        assert(!(asyncDepListeners != null && asyncDepObservers != null),
-            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
-        super(
+  }) : super(
           scopeObservers: scopeObservers,
           depObservers: depObservers,
           asyncDepObservers: asyncDepObservers,
@@ -113,13 +107,7 @@ abstract class ChildScopeHolder<Container extends ChildScopeContainer<Parent>,
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
-  })  : assert(!(scopeListeners != null && scopeObservers != null),
-            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
-        assert(!(depListeners != null && depObservers != null),
-            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
-        assert(!(asyncDepListeners != null && asyncDepObservers != null),
-            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
-        super(
+  }) : super(
           parent,
           scopeObservers: scopeObservers,
           depObservers: depObservers,
@@ -164,13 +152,7 @@ abstract class DataScopeHolder<Container extends DataScopeContainer<Data>,
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
-  })  : assert(!(scopeListeners != null && scopeObservers != null),
-            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
-        assert(!(depListeners != null && depObservers != null),
-            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
-        assert(!(asyncDepListeners != null && asyncDepObservers != null),
-            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
-        super(
+  }) : super(
           scopeObservers: scopeObservers,
           depObservers: depObservers,
           asyncDepObservers: asyncDepObservers,
@@ -227,13 +209,7 @@ abstract class ChildDataScopeHolder<
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
-  })  : assert(!(scopeListeners != null && scopeObservers != null),
-            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
-        assert(!(depListeners != null && depObservers != null),
-            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
-        assert(!(asyncDepListeners != null && asyncDepObservers != null),
-            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
-        super(
+  }) : super(
           parent,
           scopeObservers: scopeObservers,
           depObservers: depObservers,
@@ -263,16 +239,13 @@ abstract class BaseScopeHolder<Scope, Container extends ScopeContainer>
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
-  })  : assert(!(scopeListeners != null && scopeObservers != null),
-            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
-        assert(!(depListeners != null && depObservers != null),
-            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
-        assert(!(asyncDepListeners != null && asyncDepObservers != null),
-            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
-        super(
-          scopeObservers: scopeObservers ?? scopeListeners,
-          depObservers: depObservers ?? depListeners,
-          asyncDepObservers: asyncDepObservers ?? asyncDepListeners,
+  }) : super(
+          scopeObservers: scopeObservers,
+          depObservers: depObservers,
+          asyncDepObservers: asyncDepObservers,
+          scopeListeners: scopeListeners,
+          depListeners: depListeners,
+          asyncDepListeners: asyncDepListeners,
         );
 
   @protected
@@ -307,16 +280,13 @@ abstract class BaseChildScopeHolder<
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
-  })  : assert(!(scopeListeners != null && scopeObservers != null),
-            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
-        assert(!(depListeners != null && depObservers != null),
-            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
-        assert(!(asyncDepListeners != null && asyncDepObservers != null),
-            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
-        super(
-          scopeObservers: scopeObservers ?? scopeListeners,
-          depObservers: depObservers ?? depListeners,
-          asyncDepObservers: asyncDepObservers ?? asyncDepListeners,
+  }) : super(
+          scopeObservers: scopeObservers,
+          depObservers: depObservers,
+          asyncDepObservers: asyncDepObservers,
+          scopeListeners: scopeListeners,
+          depListeners: depListeners,
+          asyncDepListeners: asyncDepListeners,
         ) {
     this.parent = parent;
   }
@@ -349,16 +319,13 @@ abstract class BaseDataScopeHolder<
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
-  })  : assert(!(scopeListeners != null && scopeObservers != null),
-            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
-        assert(!(depListeners != null && depObservers != null),
-            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
-        assert(!(asyncDepListeners != null && asyncDepObservers != null),
-            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
-        super(
-          scopeObservers: scopeObservers ?? scopeListeners,
-          depObservers: depObservers ?? depListeners,
-          asyncDepObservers: asyncDepObservers ?? asyncDepListeners,
+  }) : super(
+          scopeObservers: scopeObservers,
+          depObservers: depObservers,
+          asyncDepObservers: asyncDepObservers,
+          scopeListeners: scopeListeners,
+          depListeners: depListeners,
+          asyncDepListeners: asyncDepListeners,
         );
 
   @protected
@@ -396,16 +363,13 @@ abstract class BaseChildDataScopeHolder<
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
-  })  : assert(!(scopeListeners != null && scopeObservers != null),
-            'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
-        assert(!(depListeners != null && depObservers != null),
-            'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
-        assert(!(asyncDepListeners != null && asyncDepObservers != null),
-            'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
-        super(
-          scopeObservers: scopeObservers ?? scopeListeners,
-          depObservers: depObservers ?? depListeners,
-          asyncDepObservers: asyncDepObservers ?? asyncDepListeners,
+  }) : super(
+          scopeObservers: scopeObservers,
+          depObservers: depObservers,
+          asyncDepObservers: asyncDepObservers,
+          scopeListeners: scopeListeners,
+          depListeners: depListeners,
+          asyncDepListeners: asyncDepListeners,
         ) {
     this.parent = parent;
   }

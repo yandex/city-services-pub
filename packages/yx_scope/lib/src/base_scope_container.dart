@@ -21,8 +21,6 @@ part 'core_scope_holder.dart';
 
 part 'dep.dart';
 
-part 'monitoring/listeners_internal.dart';
-
 part 'monitoring/observers_internal.dart';
 
 part 'monitoring/models/scope_meta.dart';
