@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use_from_same_package
-
 part of 'base_scope_container.dart';
 
 /// Simple holder for creating [BaseScopeHolder].
@@ -57,8 +55,11 @@ abstract class ScopeHolder<Container extends ScopeContainer>
           scopeObservers: scopeObservers,
           depObservers: depObservers,
           asyncDepObservers: asyncDepObservers,
+          // ignore: deprecated_member_use_from_same_package
           scopeListeners: scopeListeners,
+          // ignore: deprecated_member_use_from_same_package
           depListeners: depListeners,
+          // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
         );
 }
@@ -112,8 +113,11 @@ abstract class ChildScopeHolder<Container extends ChildScopeContainer<Parent>,
           scopeObservers: scopeObservers,
           depObservers: depObservers,
           asyncDepObservers: asyncDepObservers,
+          // ignore: deprecated_member_use_from_same_package
           scopeListeners: scopeListeners,
+          // ignore: deprecated_member_use_from_same_package
           depListeners: depListeners,
+          // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
         );
 }
@@ -156,8 +160,11 @@ abstract class DataScopeHolder<Container extends DataScopeContainer<Data>,
           scopeObservers: scopeObservers,
           depObservers: depObservers,
           asyncDepObservers: asyncDepObservers,
+          // ignore: deprecated_member_use_from_same_package
           scopeListeners: scopeListeners,
+          // ignore: deprecated_member_use_from_same_package
           depListeners: depListeners,
+          // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
         );
 }
@@ -214,8 +221,11 @@ abstract class ChildDataScopeHolder<
           scopeObservers: scopeObservers,
           depObservers: depObservers,
           asyncDepObservers: asyncDepObservers,
+          // ignore: deprecated_member_use_from_same_package
           scopeListeners: scopeListeners,
+          // ignore: deprecated_member_use_from_same_package
           depListeners: depListeners,
+          // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
         );
 }
