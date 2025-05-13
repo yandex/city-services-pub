@@ -2,10 +2,10 @@ import 'package:yx_scope/yx_scope.dart';
 import './main.dart';
 
 class AppScopeHolderWithListener extends ScopeHolder<AppScopeContainer> {
-  static const _observer = AppListener();
+  static const _listener = AppListener();
 
   AppScopeHolderWithListener()
-      : super(scopeObservers: [_observer], depObservers: [_observer]);
+      : super(scopeObservers: [_listener], depObservers: [_listener]);
 
   @override
   AppScopeContainer createContainer() => AppScopeContainer();

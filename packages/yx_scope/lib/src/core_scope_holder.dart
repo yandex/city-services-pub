@@ -22,10 +22,12 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
     // ignore: deprecated_member_use_from_same_package
+    @Deprecated('Use scopeObservers instead')
     List<ScopeListener>? scopeListeners,
     // ignore: deprecated_member_use_from_same_package
-    List<DepListener>? depListeners,
+    @Deprecated('Use depObservers instead') List<DepListener>? depListeners,
     // ignore: deprecated_member_use_from_same_package
+    @Deprecated('Use asyncDepObservers instead')
     List<AsyncDepListener>? asyncDepListeners,
   })  : assert(!(scopeListeners != null && scopeObservers != null),
             'Both scopeObservers and scopeListeners passed as arguments to ScopeHolder. Consider using only scopeObservers'),
@@ -232,7 +234,7 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
           final completer = Completer.sync();
           _waitLifecycleCompleter = completer;
 
-          final removeObserver = _scopeStateHolder.listen((state) {
+          final removeListener = _scopeStateHolder.listen((state) {
             if (state == ScopeState.available) {
               completer.complete();
             } else {
@@ -258,7 +260,7 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
             );
           } finally {
             _waitLifecycleCompleter = null;
-            removeObserver();
+            removeListener();
             Logger.debug(
               'Wait for scope initialization has completed, state=$_scopeState',
             );

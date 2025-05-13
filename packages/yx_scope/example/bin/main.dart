@@ -1,5 +1,4 @@
 import 'package:yx_scope/yx_scope.dart';
-import './app_listener.dart';
 
 void main() async {
   final appScopeHolder = AppScopeHolder();
@@ -11,16 +10,6 @@ void main() async {
   await appScopeHolder.drop();
 
   print(appScopeHolder.scope?.routerDelegateDep.get);
-
-  final appScopeHolderWithListener = AppScopeHolderWithListener();
-
-  await appScopeHolderWithListener.create();
-
-  print(appScopeHolderWithListener.scope?.routerDelegateDep.get);
-
-  await appScopeHolderWithListener.drop();
-
-  print(appScopeHolderWithListener.scope?.routerDelegateDep.get);
 }
 
 class AppRouterDelegate {}

@@ -253,8 +253,11 @@ abstract class BaseScopeHolder<Scope, Container extends ScopeContainer>
           scopeObservers: scopeObservers,
           depObservers: depObservers,
           asyncDepObservers: asyncDepObservers,
+          // ignore: deprecated_member_use_from_same_package
           scopeListeners: scopeListeners,
+          // ignore: deprecated_member_use_from_same_package
           depListeners: depListeners,
+          // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
         );
 
@@ -294,8 +297,11 @@ abstract class BaseChildScopeHolder<
           scopeObservers: scopeObservers,
           depObservers: depObservers,
           asyncDepObservers: asyncDepObservers,
+          // ignore: deprecated_member_use_from_same_package
           scopeListeners: scopeListeners,
+          // ignore: deprecated_member_use_from_same_package
           depListeners: depListeners,
+          // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
         ) {
     this.parent = parent;
@@ -333,8 +339,11 @@ abstract class BaseDataScopeHolder<
           scopeObservers: scopeObservers,
           depObservers: depObservers,
           asyncDepObservers: asyncDepObservers,
+          // ignore: deprecated_member_use_from_same_package
           scopeListeners: scopeListeners,
+          // ignore: deprecated_member_use_from_same_package
           depListeners: depListeners,
+          // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
         );
 
@@ -377,8 +386,11 @@ abstract class BaseChildDataScopeHolder<
           scopeObservers: scopeObservers,
           depObservers: depObservers,
           asyncDepObservers: asyncDepObservers,
+          // ignore: deprecated_member_use_from_same_package
           scopeListeners: scopeListeners,
+          // ignore: deprecated_member_use_from_same_package
           depListeners: depListeners,
+          // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
         ) {
     this.parent = parent;
