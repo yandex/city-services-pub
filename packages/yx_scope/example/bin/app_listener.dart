@@ -5,14 +5,15 @@ class AppScopeHolderWithListener extends ScopeHolder<AppScopeContainer> {
   static const _listener = AppListener();
 
   AppScopeHolderWithListener()
-      : super(scopeObservers: [_listener], depObservers: [_listener]);
+      // ignore: deprecated_member_use
+      : super(scopeListeners: [_listener], depListeners: [_listener]);
 
   @override
   AppScopeContainer createContainer() => AppScopeContainer();
 }
 
 // ignore: deprecated_member_use
-class AppListener implements ScopeListener, DepListener {
+class AppListener implements ScopeListener, DepListener, AsyncDepListener {
   const AppListener();
 
   static void _log(
@@ -81,4 +82,30 @@ class AppListener implements ScopeListener, DepListener {
   @override
   void onValueCleared(ScopeId scope, DepId dep, ValueMeta? valueMeta) =>
       _log('[$scope.$dep]($valueMeta) -> onValueCleared');
+
+  @override
+  void onDepDisposeFailed(
+          ScopeId scope, DepId dep, Object exception, StackTrace stackTrace) =>
+      _log('[$scope.$dep] -> onDepDisposeFailed', exception, stackTrace);
+
+  @override
+  void onDepDisposed(ScopeId scope, DepId dep) =>
+      _log('[$scope.$dep] -> onDepDisposed');
+
+  @override
+  void onDepInitializeFailed(
+          ScopeId scope, DepId dep, Object exception, StackTrace stackTrace) =>
+      _log('[$scope.$dep] -> onDepInitializeFailed', exception, stackTrace);
+
+  @override
+  void onDepInitialized(ScopeId scope, DepId dep) =>
+      _log('[$scope.$dep] -> onDepInitialized');
+
+  @override
+  void onDepStartDispose(ScopeId scope, DepId dep) =>
+      _log('[$scope.$dep] -> onDepStartDispose');
+
+  @override
+  void onDepStartInitialize(ScopeId scope, DepId dep) =>
+      _log('[$scope.$dep] -> onDepStartInitialize');
 }
