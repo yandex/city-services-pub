@@ -7,15 +7,12 @@ part of 'base_scope_container.dart';
 /// Holder contains the state of a [BaseScopeContainer] — null or the scope itself.
 /// This is the core entity that provides access to the [BaseScopeContainer].
 abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
-    extends ScopeStateHolder<Scope?> with ScopeStateStreamable<Scope?> {
+    extends ScopeStateHolder<Scope> with ScopeStateStreamable<Scope> {
   final ScopeObserverInternal _scopeObserverInternal;
   final List<DepObserver>? _depObservers;
   final List<AsyncDepObserver>? _asyncDepObservers;
 
-  final _scopeStateHolder = ScopeStateHolder<ScopeState>(ScopeState.none);
   Completer? _waitLifecycleCompleter;
-
-  ScopeState get _scopeState => _scopeStateHolder.scope;
 
   CoreScopeHolder({
     List<ScopeObserver>? scopeObservers,
@@ -38,7 +35,7 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
         _scopeObserverInternal = ScopeObserverInternal(scopeObservers),
         _depObservers = depObservers,
         _asyncDepObservers = asyncDepObservers,
-        super(null);
+        super(ScopeState.none());
 
   /// Initialize scope. [Scope] becomes available and everyone can
   /// start working with it via [BaseScopeHolder].
@@ -57,77 +54,77 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
     if (scope is! Scope) {
       throw ScopeException('You must implement $Scope for your $Container');
     }
-    switch (_scopeState) {
-      case ScopeState.initializing:
+
+    if (state.initializing) {
+      throw ScopeException(
+        'You are trying to initialize $Container that is initializing right now. '
+        'Given instances of the $Container might be different, '
+        'so do not call `create` sequentially without `drops`',
+      );
+    }
+
+    if (state.available) {
+      throw ScopeException(
+        'You are trying to initialize $Container that has been already initialized'
+        'Given instances of the $Container might be different, '
+        'so do not call `create` sequentially without `drops`',
+      );
+    }
+
+    if (state.disposing) {
+      Logger.warning(
+        '$Container calls init method while disposing. '
+        'This is a weird situation and can lead to unexpected behaviour.',
+      );
+      final currentCompleter = _waitLifecycleCompleter;
+      if (currentCompleter != null) {
         throw ScopeException(
-          'You are trying to initialize $Container that is initializing right now. '
-          'Given instances of the $Container might be different, '
-          'so do not call `create` sequentially without `drops`',
+          'Scope is already waiting for dispose in order to be recreated again. '
+          'Probably you have called `create` method without await a few times in a row.',
         );
-      case ScopeState.available:
-        throw ScopeException(
-          'You are trying to initialize $Container that has been already initialized'
-          'Given instances of the $Container might be different, '
-          'so do not call `create` sequentially without `drops`',
-        );
-      case ScopeState.disposing:
-        Logger.warning(
-          '$Container calls init method while disposing. '
-          'This is a weird situation and can lead to unexpected behaviour.',
-        );
-        final currentCompleter = _waitLifecycleCompleter;
-        if (currentCompleter != null) {
-          throw ScopeException(
-            'Scope is already waiting for dispose in order to be recreated again. '
-            'Probably you have called `create` method without await a few times in a row.',
-          );
-        }
-        final completer = Completer.sync();
-        _waitLifecycleCompleter = completer;
-        final removeListener = _scopeStateHolder.listen((state) {
-          if (state == ScopeState.none) {
-            completer.complete();
-          } else {
-            completer.completeError(
-              ScopeError(
-                'Unexpected state ($state) after ${ScopeState.disposing},'
-                ' must be ${ScopeState.none}',
-              ),
-            );
-          }
-        });
-        try {
-          await completer.future;
-        } on Object catch (e, s) {
-          Error.throwWithStackTrace(
+      }
+      final completer = Completer.sync();
+      _waitLifecycleCompleter = completer;
+      final removeListener = listenState((state) {
+        if (state.none) {
+          completer.complete();
+        } else {
+          completer.completeError(
             ScopeError(
-              '$e\n'
-              'Unexpected exception when were waiting for dispose during initialization. '
-              'This is definitely an error in the library,'
-              ' please contact an owner, if you see this message.',
+              'Unexpected state ($state) after ${ScopeState.disposing},'
+              ' must be ${ScopeState.none}',
             ),
-            s,
           );
-        } finally {
-          _waitLifecycleCompleter = null;
-          removeListener();
-          Logger.debug(
-            'Wait for scope dispose has completed, state=$_scopeState',
-          );
-          if (!_scopeState.none) {
-            throw ScopeError(
-              'Scope initialization waited for dispose of the previous scope state, '
-              'it\'s expected to be ${ScopeState.none}, '
-              'but it appeared to be $_scopeState.'
-              'This is definitely an error in the library,'
-              ' please contact an owner, if you see this message.',
-            );
-          }
         }
-        break;
-      case ScopeState.none:
-        // Everything is okay, scope can be initialized
-        break;
+      });
+      try {
+        await completer.future;
+      } on Object catch (e, s) {
+        Error.throwWithStackTrace(
+          ScopeError(
+            '$e\n'
+            'Unexpected exception when were waiting for dispose during initialization. '
+            'This is definitely an error in the library,'
+            ' please contact an owner, if you see this message.',
+          ),
+          s,
+        );
+      } finally {
+        _waitLifecycleCompleter = null;
+        removeListener();
+        Logger.debug(
+          'Wait for scope dispose has completed, state=$state',
+        );
+        if (!state.none) {
+          throw ScopeError(
+            'Scope initialization waited for dispose of the previous scope state, '
+            'it\'s expected to be ${ScopeState.none}, '
+            'but it appeared to be $state.'
+            'This is definitely an error in the library,'
+            ' please contact an owner, if you see this message.',
+          );
+        }
+      }
     }
 
     _prepareObservers(scope);
@@ -202,96 +199,97 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
         'both non-nullable args (drop during initialization)',
       );
     }
-    switch (_scopeState) {
-      case ScopeState.disposing:
-        assert(
-          false,
-          'You are trying to dispose $Container that is disposing right now',
-        );
-        return;
-      case ScopeState.none:
-        assert(
-          false,
-          'You are trying to dispose $Container that has been already disposed or never existed',
-        );
-        return;
-      case ScopeState.initializing:
-        // if no initialized dependencies has been passed
-        // then this is a normal drop
-        if (initializedDeps == null && initializedScope == null) {
-          Logger.warning(
-            '$Container calls dispose method while initializing. '
-            'This is a weird situation and can lead to unexpected behaviour.',
-          );
 
-          final currentCompleter = _waitLifecycleCompleter;
-          if (currentCompleter != null) {
-            throw ScopeException(
-              'Scope is already waiting for initialization in order to be disposed again. '
-              'Probably you have called `drop` method without await a few times in a row.',
-            );
-          }
-          final completer = Completer.sync();
-          _waitLifecycleCompleter = completer;
+    if (state.disposing) {
+      assert(
+        false,
+        'You are trying to dispose $Container that is disposing right now',
+      );
+      return;
+    }
 
-          final removeListener = _scopeStateHolder.listen((state) {
-            if (state == ScopeState.available) {
-              completer.complete();
-            } else {
-              completer.completeError(
-                ScopeError(
-                  'Unexpected state ($state) after ${ScopeState.initializing},'
-                  ' must be ${ScopeState.available}',
-                ),
-              );
-            }
-          });
-          try {
-            await completer.future;
-          } on Object catch (e, s) {
-            Error.throwWithStackTrace(
-              ScopeError(
-                '$e\n'
-                'Unexpected exception when were waiting for initialization during dispose. '
-                'This is definitely an error in the library,'
-                ' please contact an owner, if you see this message.',
-              ),
-              s,
-            );
-          } finally {
-            _waitLifecycleCompleter = null;
-            removeListener();
-            Logger.debug(
-              'Wait for scope initialization has completed, state=$_scopeState',
-            );
-            if (!_scopeState.available) {
-              throw ScopeError(
-                'Scope dispose waited for initialization of the previous scope state, '
-                'it\'s expected to be ${ScopeState.available}, '
-                'but it appears to be $_scopeState. '
-                'This is definitely an error in the library,'
-                ' please contact an owner, if you see this message.',
-              );
-            }
-          }
-        } else {
-          Logger.warning(
-            '$Container calls dispose method, because of some exception. '
-            'See stacktrace below for more details.',
+    if (state.none) {
+      assert(
+        false,
+        'You are trying to dispose $Container that has been already disposed or never existed',
+      );
+      return;
+    }
+
+    if (state.initializing) {
+      // if no initialized dependencies has been passed
+      // then this is a normal drop
+      if (initializedDeps == null && initializedScope == null) {
+        Logger.warning(
+          '$Container calls dispose method while initializing. '
+          'This is a weird situation and can lead to unexpected behaviour.',
+        );
+
+        final currentCompleter = _waitLifecycleCompleter;
+        if (currentCompleter != null) {
+          throw ScopeException(
+            'Scope is already waiting for initialization in order to be disposed again. '
+            'Probably you have called `drop` method without await a few times in a row.',
           );
         }
-        // If no initialized dependencies has been passed it means this is an internal drop.
-        // It happens only when some Exception appeared during init.
-        // In this case we do not wait for availability and do the drop.
-        break;
-      case ScopeState.available:
-        // Everything is okay, scope can be disposed because now it's active
-        break;
+        final completer = Completer.sync();
+        _waitLifecycleCompleter = completer;
+
+        final removeListener = listenState((state) {
+          if (state.available) {
+            completer.complete();
+          } else {
+            completer.completeError(
+              ScopeError(
+                'Unexpected state ($state) after ${ScopeState.initializing},'
+                ' must be ${ScopeState.available}',
+              ),
+            );
+          }
+        });
+        try {
+          await completer.future;
+        } on Object catch (e, s) {
+          Error.throwWithStackTrace(
+            ScopeError(
+              '$e\n'
+              'Unexpected exception when were waiting for initialization during dispose. '
+              'This is definitely an error in the library,'
+              ' please contact an owner, if you see this message.',
+            ),
+            s,
+          );
+        } finally {
+          _waitLifecycleCompleter = null;
+          removeListener();
+          Logger.debug(
+            'Wait for scope initialization has completed, state=$state',
+          );
+          if (!state.available) {
+            throw ScopeError(
+              'Scope dispose waited for initialization of the previous scope state, '
+              'it\'s expected to be ${ScopeState.available}, '
+              'but it appears to be $state. '
+              'This is definitely an error in the library,'
+              ' please contact an owner, if you see this message.',
+            );
+          }
+        }
+      } else {
+        Logger.warning(
+          '$Container calls dispose method, because of some exception. '
+          'See stacktrace below for more details.',
+        );
+      }
+      // If no initialized dependencies has been passed it means this is an internal drop.
+      // It happens only when some Exception appeared during init.
+      // In this case we do not wait for availability and do the drop.
     }
+
     final scope = this.scope as Container? ?? initializedScope;
     if (scope == null) {
       throw ScopeError(
-        '$Container must not be null if scope state is $_scopeState',
+        '$Container must not be null if scope state is $state',
       );
     }
 
@@ -345,32 +343,31 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
   }
 
   // ignore: use_setters_to_change_properties
-  void _updateScope(ScopeState state) {
-    Logger.debug('$Container state: ${state.name}');
-    _scopeStateHolder._setScope(state);
+  void _updateScope(ScopeState<Scope> state) {
+    Logger.debug('$Container state: $state');
+    _updateState(state);
   }
 
-  void _initializing() => _updateScope(ScopeState.initializing);
+  void _initializing() => _updateScope(ScopeState.initializing());
 
   Future<void> _disposed() async {
     try {
-      _setScope(null); // must be the first call in this method
+      _updateScope(ScopeState.none()); // must be the first call in this method
     } on NotifyListenerError catch (e, s) {
       Logger.error('Some listeners thrown an exception during dispose', e, s);
     }
-    _updateScope(ScopeState.none);
   }
 
   void _available(Scope scope) {
     try {
-      _setScope(scope); // must be the first call in this method
+      _updateScope(ScopeState.available(
+          scope: scope)); // must be the first call in this method
     } on NotifyListenerError catch (e, s) {
       Logger.error('Some listeners thrown an exception during init', e, s);
     }
-    _updateScope(ScopeState.available);
   }
 
-  void _disposing() => _updateScope(ScopeState.disposing);
+  void _disposing() => _updateScope(ScopeState.disposing());
 
   void _prepareObservers(Container scope) {
     scope._depObserver._observers = _depObservers;

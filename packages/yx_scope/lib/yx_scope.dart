@@ -9,6 +9,7 @@ export 'src/base_scope_container.dart'
         TestableScopeStateHolder;
 export 'src/core/async_lifecycle.dart';
 export 'src/core/scope_exception.dart';
+export 'src/core/scope_state.dart';
 export 'src/monitoring/observers.dart';
 export 'src/monitoring/models/dep_id.dart';
 export 'src/monitoring/models/scope_id.dart';

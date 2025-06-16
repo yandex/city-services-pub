@@ -57,6 +57,7 @@
   "packages/yx_scope/test/observers_test.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/test/observers_test.dart",
   "packages/yx_scope/test/parent_scope_test.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/test/parent_scope_test.dart",
   "packages/yx_scope/test/scope_state_streamable_test.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/test/scope_state_streamable_test.dart",
+  "packages/yx_scope/test/scope_state_test.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/test/scope_state_test.dart",
   "packages/yx_scope/test/scope_test.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/test/scope_test.dart",
   "packages/yx_scope/test/utils/test_logger.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/test/utils/test_logger.dart",
   "packages/yx_scope/test/utils/utils.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/test/utils/utils.dart",
