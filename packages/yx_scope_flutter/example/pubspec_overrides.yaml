@@ -3,4 +3,4 @@ dependency_overrides:
     path: ../../yx_scope
   yx_scope_linter:
     path: ../../yx_scope_linter
-  hotreloader: 4.2.0
+  hotreloader: 4.3.0

@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         # Check the library against the most recent version and the previous minor version
-        flutter-version: [3.29.2, 3.27.1, 3.24.5]
+        flutter-version: [3.32.4, 3.29.2, 3.27.1, 3.24.5]
         package:
           - packages/yx_scope
           - packages/yx_scope_flutter
