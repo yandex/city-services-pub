@@ -141,6 +141,13 @@ init/dispose methods will not be called.
 Dependency implements AsyncLifecycle interface, must be use asyncDep or rawAsyncDep. Otherwise
 init/dispose methods will not be called.
 
+### avoid_child_scope_in_initialize_queue
+
+A child scope should not be an `asyncDep` inside a parent scope. If this happens, it means the child
+and parent scopes have the same lifecycle. In this case, the child scope is likely unnecessary. It
+is just a subset of the parent scope’s dependencies. Use `ScopeModule` to separate these
+dependencies logically. They will still belong to the same scope and share its lifecycle.
+
 ## Manual lints
 
 Not all of the lint rules are implemented so far. So there are all not implemented

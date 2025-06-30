@@ -5,9 +5,10 @@ import 'package:analyzer/error/error.dart' hide LintCode;
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
 import 'package:yx_scope_linter/src/types.dart';
-import 'package:yx_scope_linter/src/utils.dart';
 
-class AvoidChildScopeInInitializeQueue extends DartLintRule {
+import '../yx_scope_lint_rule.dart';
+
+class AvoidChildScopeInInitializeQueue extends YXScopeLintRule {
   static const _code = LintCode(
     name: 'avoid_async_dep_child_scope',
     problemMessage: 'Child scope should not have the same lifecycle as its '
@@ -26,12 +27,8 @@ class AvoidChildScopeInInitializeQueue extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    context.registry.addClassDeclaration((node) {
-      if (!ClassUtils.isScopeNode(node)) {
-        return;
-      }
-      final deps = ClassUtils.getDepDeclarations(node);
-      for (final dep in deps.values) {
+    yxScopeRegistry(context).addScopeDeclarations((module) {
+      for (final dep in module.deps.values) {
         final methodInvocation = dep.field.fields.childEntities
             .whereType<VariableDeclaration>()
             .expand((e) => e.childEntities.whereType<MethodInvocation>())

@@ -1,20 +1,22 @@
+import 'package:example/utils.dart';
 import 'package:yx_scope/yx_scope.dart';
 
 class SomeScope extends BaseScopeContainer {
-  late final Dep<SomeDep0> some0Dep = dep(() => SomeDep0(some6Dep.get));
+  late final Dep<SomeDep0> some0Dep =
+      dep(() => SomeDep0(someScopeModule.some6Dep.get));
 
   @override
   List<Set<AsyncDep>> get initializeQueue => [
         {
           some2Dep,
-          some4Dep,
+          someScopeModule.some4Dep,
           anysome2Dep,
         }
       ];
 
   // Some comment
   late final Dep<SomeDep0> some0WithCommentDep =
-      dep(() => SomeDep0(some6Dep.get));
+      dep(() => SomeDep0(someScopeModule.some6Dep.get));
 
   // expect_lint: dep_cycle
   late final Dep<SomeDep1> some1Dep =
@@ -33,32 +35,23 @@ class SomeScope extends BaseScopeContainer {
   });
 
   SomeDep3 _createSome3Dep() {
-    final some4 = some4Dep.get;
+    final some4 = someScopeModule.some4Dep.get;
     return SomeDep3(some1Dep.get, some4: some4);
   }
 
   // expect_lint: dep_cycle
-  late final some4Dep = rawAsyncDep(
-    () {
-      return _createSome4Dep();
-    },
-    init: (dep) async => dep.init(),
-    dispose: (dep) async => dep.dispose(),
-  );
+  late final someScopeModule = SomeScopeModule(this);
 
-  SomeDep4 _createSome4Dep() {
+  SomeDep4 createSome4Dep() {
     return SomeDep4(some1Dep.get, some3Dep.get);
   }
 
   // expect_lint: dep_cycle
-  late final Dep<SomeDep5> some5Dep = dep(_createSome5Dep);
-
-  SomeDep5 _createSome5Dep() => SomeDep5(some6Dep.get);
+  late final scopeModuleFromAnotherFile = UtilsScopeModule(this);
 
   // expect_lint: dep_cycle
-  late final some6Dep = dep(() => _createSome6Dep());
-
-  SomeDep6 _createSome6Dep() => SomeDep6(some5Dep.get);
+  late final some7Dep =
+      dep(() => SomeDep7(scopeModuleFromAnotherFile.someUtilsDep.get));
 }
 
 class SomeDep0 {
@@ -113,4 +106,32 @@ class SomeDep6 {
   final SomeDep5 some5;
 
   SomeDep6(this.some5);
+}
+
+class SomeDep7 {
+  final SomeUtilsDep someUtils;
+
+  SomeDep7(this.someUtils);
+}
+
+class SomeScopeModule extends ScopeModule<SomeScope> {
+  SomeScopeModule(super.container);
+
+  late final some4Dep = rawAsyncDep(
+    () {
+      return container.createSome4Dep();
+    },
+    init: (dep) async => dep.init(),
+    dispose: (dep) async => dep.dispose(),
+  );
+
+  // expect_lint: dep_cycle
+  late final Dep<SomeDep5> some5Dep = dep(() => _createSome5Dep());
+
+  SomeDep5 _createSome5Dep() => SomeDep5(some6Dep.get);
+
+  // expect_lint: dep_cycle
+  late final some6Dep = dep(_createSome6Dep);
+
+  SomeDep6 _createSome6Dep() => SomeDep6(some5Dep.get);
 }

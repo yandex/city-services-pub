@@ -2,10 +2,12 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart' hide LintCode;
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-import 'package:yx_scope_linter/src/priority.dart';
-import 'package:yx_scope_linter/src/utils.dart';
 
-class FinalDep extends DartLintRule {
+import '../models/dep.dart';
+import '../priority.dart';
+import '../yx_scope_lint_rule.dart';
+
+class FinalDep extends YXScopeLintRule {
   static const _code = LintCode(
     name: 'final_dep',
     problemMessage: 'A dep field must be `late final`',
@@ -21,22 +23,26 @@ class FinalDep extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    context.registry.addClassDeclaration((node) {
-      if (!ClassUtils.isScopeContainer(node)) {
-        return;
-      }
-      final deps = ClassUtils.getDepDeclarations(node);
-      for (final dep in deps.values) {
-        final field = dep.field;
+    yxScopeRegistry(context).addScopeDeclarations((module) {
+      void checkFinal(BaseScopeDeclaration module) {
+        for (final dep in module.deps.values) {
+          final field = dep.field;
 
-        if (!field.fields.isFinal) {
-          reporter.atToken(
-            dep.nameToken,
-            _code,
-            data: field.fields,
-          );
+          if (!field.fields.isFinal) {
+            reporter.atToken(
+              dep.nameToken,
+              _code,
+              data: field.fields,
+            );
+          }
+        }
+
+        for (final module in module.modules.values) {
+          checkFinal(module);
         }
       }
+
+      checkFinal(module);
     });
   }
 

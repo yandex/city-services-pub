@@ -4,14 +4,15 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart' hide LintCode;
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-import 'package:yx_scope_linter/src/priority.dart';
-import 'package:yx_scope_linter/src/utils.dart';
 
+import '../models/dep.dart';
+import '../priority.dart';
 import '../types.dart';
+import '../yx_scope_lint_rule.dart';
 
 const _asyncDepKeyword = 'asyncDep';
 
-class UseAsyncDepForAsyncLifecycle extends DartLintRule {
+class UseAsyncDepForAsyncLifecycle extends YXScopeLintRule {
   static const _code = LintCode(
     name: 'use_async_dep_for_async_lifecycle',
     problemMessage:
@@ -30,34 +31,37 @@ class UseAsyncDepForAsyncLifecycle extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    context.registry.addClassDeclaration((node) {
-      if (!ClassUtils.isScopeContainer(node)) {
-        return;
-      }
-      final deps = ClassUtils.getDepDeclarations(node);
-      for (final dep in deps.values) {
-        if (dep.isAsync) {
-          continue;
+    yxScopeRegistry(context).addScopeDeclarations((module) {
+      void checkAsyncDeps(BaseScopeDeclaration module) {
+        for (final dep in module.deps.values) {
+          if (dep.isAsync) {
+            continue;
+          }
+          final methodInvocation = dep.field.fields.childEntities
+              .whereType<VariableDeclaration>()
+              .expand((e) => e.childEntities.whereType<MethodInvocation>())
+              .first;
+          final depClass = (methodInvocation.staticType as InterfaceType)
+              .typeArguments
+              .map((e) => e.element)
+              .whereType<ClassElement>()
+              .first;
+          final implementsAsyncLifecycle =
+              asyncLifecycleType.isAssignableFromType(depClass.thisType);
+          if (implementsAsyncLifecycle) {
+            reporter.atToken(
+              methodInvocation.methodName.token,
+              _code,
+              data: methodInvocation,
+            );
+          }
         }
-        final methodInvocation = dep.field.fields.childEntities
-            .whereType<VariableDeclaration>()
-            .expand((e) => e.childEntities.whereType<MethodInvocation>())
-            .first;
-        final depClass = (methodInvocation.staticType as InterfaceType)
-            .typeArguments
-            .map((e) => e.element)
-            .whereType<ClassElement>()
-            .first;
-        final implementsAsyncLifecycle =
-            asyncLifecycleType.isAssignableFromType(depClass.thisType);
-        if (implementsAsyncLifecycle) {
-          reporter.atToken(
-            methodInvocation.methodName.token,
-            _code,
-            data: methodInvocation,
-          );
+        for (final module in module.modules.values) {
+          checkAsyncDeps(module);
         }
       }
+
+      checkAsyncDeps(module);
     });
   }
 
@@ -75,7 +79,7 @@ class UseAsyncDepForAsyncLifecycleFix extends DartFix {
     List<AnalysisError> others,
   ) {
     final builder = reporter.createChangeBuilder(
-      message: 'Use `$_asyncDepKeyword` declaration',
+      message: 'Use `asyncDep` declaration',
       priority: FixPriority.useAsyncDepForAsyncLifecycle.value,
     );
     final methodInvocation = analysisError.data as MethodInvocation;
@@ -83,7 +87,7 @@ class UseAsyncDepForAsyncLifecycleFix extends DartFix {
     builder.addDartFileEdit((builder) {
       builder.addSimpleReplacement(
         methodInvocation.methodName.sourceRange,
-        _asyncDepKeyword,
+        'asyncDep',
       );
     });
   }

@@ -65,13 +65,6 @@ instances of classes. Otherwise, there is a risk of breaking the scope's lifecyc
 passing `ScopeModule(someDep.get)` would cause `someDep` to be instantiated immediately upon module
 creation, rather than lazily when the dependency is first accessed.
 
-### avoid_child_scope_in_initialize_queue
-
-A child scope should not be an `asyncDep` inside a parent scope. If this happens, it means the child
-and parent scopes have the same lifecycle. In this case, the child scope is likely unnecessary. It
-is just a subset of the parent scope’s dependencies. Use `ScopeModule` to separate these
-dependencies logically. They will still belong to the same scope and share its lifecycle.
-
 ### avoid_conditions_in_initialize_queue
 
 All asynchronous dependencies in a scope must be initialized. This ensures that accessing any

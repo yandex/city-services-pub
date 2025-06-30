@@ -7,7 +7,7 @@ import 'package:yx_scope_linter/src/lints/use_async_dep_for_async_lifecycle.dart
 
 import 'lints/final_dep.dart';
 
-class YXScopedLintsPlugin extends PluginBase {
+class YXScopeLintsPlugin extends PluginBase {
   @override
   List<LintRule> getLintRules(CustomLintConfigs configs) => const [
         FinalDep(),

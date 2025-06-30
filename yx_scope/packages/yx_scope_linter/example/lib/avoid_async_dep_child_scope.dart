@@ -1,10 +1,5 @@
 import 'package:yx_scope/yx_scope.dart';
 
-class SomeScopeHolder extends ScopeHolder<_ParentScopeContainer> {
-  @override
-  _ParentScopeContainer createContainer() => _ParentScopeContainer();
-}
-
 class _ParentScopeContainer extends ScopeContainer {
   @override
   List<Set<AsyncDep>> get initializeQueue => [
@@ -21,6 +16,8 @@ class _ParentScopeContainer extends ScopeContainer {
   // expect_lint: avoid_async_dep_child_scope
   late final _childScopeHolderAsyncDep =
       asyncDep(() => _ChildAsyncLifecycleScopeContainer());
+
+  late final parentModule = ParentScopeModule(this);
 }
 
 class ParentScopeModule extends ScopeModule<_ParentScopeContainer> {

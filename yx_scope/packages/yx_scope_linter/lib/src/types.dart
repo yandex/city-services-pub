@@ -29,7 +29,10 @@ const scopeContainerValueType = TypeChecker.fromName(
   packageName: 'yx_scope',
 );
 
-const anyDepValueTypes = TypeChecker.any([depValueType, asyncDepValueType]);
+const anyDepValueTypes = TypeChecker.any([
+  depValueType,
+  asyncDepValueType,
+]);
 
 const scopeModuleType = TypeChecker.fromName(
   'ScopeModule',

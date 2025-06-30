@@ -1,11 +1,11 @@
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/error/error.dart' hide LintCode;
 import 'package:analyzer/error/listener.dart';
 import 'package:custom_lint_builder/custom_lint_builder.dart';
-import 'package:yx_scope_linter/src/names.dart';
-import 'package:yx_scope_linter/src/utils.dart';
+import 'package:yx_scope_linter/src/types.dart';
 
-class PassAsyncLifecycleInInitializeQueue extends DartLintRule {
+import '../yx_scope_lint_rule.dart';
+
+class PassAsyncLifecycleInInitializeQueue extends YXScopeLintRule {
   static const _code = LintCode(
     name: 'pass_async_lifecycle_in_initialize_queue',
     problemMessage:
@@ -24,29 +24,15 @@ class PassAsyncLifecycleInInitializeQueue extends DartLintRule {
     ErrorReporter reporter,
     CustomLintContext context,
   ) {
-    context.registry.addClassDeclaration((node) {
-      if (!ClassUtils.isScopeContainer(node)) {
+    yxScopeRegistry(context).addScopeDeclarations((scope) {
+      if (scopeModuleType.isAssignableFromType(scope.type)) {
         return;
       }
-      final initializeQueueMethod = ClassUtils.getInstanceMethods(node)
-          .cast<MethodDeclaration?>()
-          .firstWhere(
-            (element) => element?.name.lexeme == MethodNames.initializeQueue,
-            orElse: () => null,
-          );
-
-      final depsInQueue = initializeQueueMethod?.body.childEntities
-          .whereType<ListLiteral>()
-          .expand((e) => e.elements)
-          .expand((e) => e.childEntities.whereType<SimpleIdentifier>());
-
-      final queueDeps = depsInQueue?.map((e) => e.name).toSet() ?? {};
-      final deps = ClassUtils.getDepDeclarations(node);
-      for (final dep in deps.values) {
+      for (final dep in scope.deps.values) {
         if (dep.isSync) {
           continue;
         }
-        if (!queueDeps.contains(dep.name)) {
+        if (!scope.initializeQueue.expand((element) => element).contains(dep)) {
           reporter.atToken(
             dep.nameToken,
             _code,
