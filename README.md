@@ -1,28 +1,19 @@
-# yx_scope packages
+# City Services Flutter™ Libraries
 
-yx_scope is a compile-safe DI framework with advanced scoping capabilities.
+This repository contains a collection of Flutter™ libraries developed by Yandex City Services. These libraries provide reusable components and utilities for building Flutter mobile applications.
 
-## Library Components
+## Usage
 
-The library group currently consists of:
+Each library contains its own documentation and usage examples. Please refer to individual directories for specific implementation details.
 
-- **[yx_scope](packages/yx_scope)**: The core implementation of the framework
-- **[yx_scope_flutter](packages/yx_scope_flutter)**: An adapter library that allows embedding
-  yx_scope containers into the widget tree
-- **[yx_scope_linter](packages/yx_scope_linter)**: A set of custom lint rules that provide
-  additional protection against errors when working with yx_scope
+## **Contributing**
 
-## Features
+We welcome contributions from the community. Please read our contributing guidelines before submitting pull requests.
 
-- Pure Dart
-- DI-like (not static and not ServiceLocator)
-- Compile-safe access to dependencies
-- No code generation
-- Flutter-friendly container management
-- Declarative description of the dependency tree
-- Non-reactive dependency tree
-- Unambiguous behavior and lifecycle of dependencies in containers
-- Ability to create scopes of any nesting level
-- Compile-safe check for the existence of active scopes
-- Support for asynchronous dependencies and their initialization
-- Compile-safe protection against circular dependencies
+## **License**
+
+Please check individual package licenses for specific terms and conditions.
+
+---
+
+**Disclaimer:** Flutter and the related logo are trademarks of Google LLC. We are not endorsed by or affiliated with Google LLC.
