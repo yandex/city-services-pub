@@ -1,3 +1,11 @@
+## 1.1.0 - 2025.07.07
+
+* Fix: ScopeBuilder and ScopeListener fixes, tests added
+* Fix: mounted check added to _subscribe method  
+* Add test for checking rebuilds only for dependent widgets
+* New Flutter version added to CI
+* Documentation fixes and updates
+
 ## 1.0.2 - 2024.12.18
 
 * Updated repository link

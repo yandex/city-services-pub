@@ -1,3 +1,11 @@
+## 0.1.3 - 2025.07.07
+
+* Fix: dep_cycle rule support for ScopeModule
+* avoid_async_dep_child_scope lint rule added
+* Linter CI added to project
+* Analyzer version upgrade to v6.4.1
+* Documentation fixes and updates
+
 ## 0.1.2 - 2024.12.18
 
 * Two new manual lint rules: `avoid_child_scope_in_initialize_queue`

@@ -1,7 +1,8 @@
 name: yx_scope_flutter
 description: An adapter package that provides yx_scope widgets for Flutter UI integration
-version: 1.0.2
-repository: 'https://github.com/yandex/yx_scope'
+version: 1.1.0
+repository: https://github.com/yandex/city-services-pub
+issue_tracker: https://github.com/yandex/city-services-pub/issues
 publish_to: 'none'
 topics:
   - di
@@ -14,7 +15,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  yx_scope: ^1.0.0
+  yx_scope: ^1.1.0
   flutter:
     sdk: flutter
 

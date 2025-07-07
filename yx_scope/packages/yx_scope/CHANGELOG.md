@@ -1,3 +1,16 @@
+## 1.1.0 - 2025.07.07
+
+* Public sealed scope state API added
+* Fix: Prohibit DataScope initialization with null data by enforcing non-nullable Data type
+* Documentation fixes and updates
+* Updated CI with new Flutter version support
+
+#### Deprecated API
+Listeners have been renamed into Observers due to conflicts with yx_scope_flutter package.
+Consider using Observers instead of Listeners.
+Deprecated classes and fields will be highlighted from now on.
+In the next major, deprecated API will be completely removed.
+
 ## 1.0.2 - 2024.12.18
 
 * Fix: corrected an inheritance of DataScopeContainer class to BaseScopeContainer instead of

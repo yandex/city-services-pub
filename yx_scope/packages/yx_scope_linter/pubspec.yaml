@@ -1,7 +1,8 @@
 name: yx_scope_linter
 description: A package that contains static analysis rules for yx_scope DI framework
-version: 0.1.2
-repository: 'https://github.com/yandex/yx_scope'
+version: 0.1.3
+repository: https://github.com/yandex/city-services-pub
+issue_tracker: https://github.com/yandex/city-services-pub/issues
 publish_to: 'none'
 topics:
   - di
@@ -16,7 +17,7 @@ dependencies:
   analyzer: ^6.4.1
   analyzer_plugin: ^0.11.2
   custom_lint_builder: ^0.6.2
-  yx_scope: ^1.0.0
+  yx_scope: ^1.1.0
 
 dev_dependencies:
   lints: ^2.0.0

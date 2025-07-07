@@ -13,7 +13,7 @@ part of 'base_scope_container.dart';
 ///   late final navigationDep = dep(() => Navigation());
 /// }
 ///
-/// class MonitorScopeModule extends ScopeModule<SomeScopeModule> {
+/// class MonitorScopeModule extends ScopeModule<SomeScopeContainer> {
 ///   MonitorScopeModule(super.container);
 ///
 ///   late final reporterDep = dep(() => Reporter());
