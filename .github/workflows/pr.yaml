@@ -17,9 +17,9 @@ jobs:
         # Check the library against the most recent version and the previous minor version
         flutter-version: [3.32.4, 3.29.2, 3.27.1, 3.24.5]
         package:
-          - packages/yx_scope
-          - packages/yx_scope_flutter
-          - packages/yx_scope_linter
+          - yx_scope/packages/yx_scope
+          - yx_scope/packages/yx_scope_flutter
+          - yx_scope/packages/yx_scope_linter
 
     defaults:
       run:
@@ -45,9 +45,9 @@ jobs:
         run: flutter analyze
 
       - name: Verify custom_lint
-        working-directory: packages/yx_scope_linter/example
+        working-directory: yx_scope/packages/yx_scope_linter/example
         run: dart run custom_lint --watch
 
       - name: Run tests
-        if: matrix.package != 'packages/yx_scope_linter'
+        if: matrix.package != 'yx_scope/packages/yx_scope_linter'
         run: flutter test
