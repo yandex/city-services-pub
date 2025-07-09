@@ -1,9 +1,8 @@
 name: yx_scope
 description: A core package of the compile-safe DI framework with advanced scoping capabilities
-version: 1.1.0
-repository: https://github.com/yandex/city-services-pub
+version: 1.1.1
+repository: https://github.com/yandex/city-services-pub/tree/main/yx_scope/packages/yx_scope
 issue_tracker: https://github.com/yandex/city-services-pub/issues
-publish_to: 'none'
 topics:
   - di
   - scope

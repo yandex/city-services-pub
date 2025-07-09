@@ -1,3 +1,7 @@
+## 1.1.1 - 2025.07.08
+
+* Documentation links fixed
+
 ## 1.1.0 - 2025.07.07
 
 * Public sealed scope state API added

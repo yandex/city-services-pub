@@ -105,11 +105,11 @@ Due to null-safety, `ScopeHolder` provides a compile-safe check for the existenc
 directly
 at the time of writing code, not at runtime.
 
-![Scope Anatomy](https://raw.githubusercontent.com/yandex/yx_scope/refs/heads/main/packages/yx_scope/doc/assets/scope_anatomy.png)
+![Scope Anatomy](https://github.com/yandex/city-services-pub/blob/main/yx_scope/packages/yx_scope/doc/assets/scope_anatomy.png?raw=true)
 
 ## Live Templates
 
 You can write code of scopes faster with Live Templates for Intellij IDEA/Android Studio or VSCode.
 
 You can find an
-instruction [in the documentation](https://raw.githubusercontent.com/yandex/yx_scope/refs/heads/main/packages/yx_scope/doc/live_templates.md).
+instruction [in the documentation](https://github.com/yandex/city-services-pub/blob/main/yx_scope/packages/yx_scope/doc/live_templates.md).

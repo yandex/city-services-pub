@@ -1,3 +1,7 @@
+## 0.1.4 - 2025.07.08
+
+* Documentation links fixed
+
 ## 0.1.3 - 2025.07.07
 
 * Fix: dep_cycle rule support for ScopeModule

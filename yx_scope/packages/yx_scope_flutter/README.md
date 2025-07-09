@@ -63,4 +63,4 @@ Widget build() =>
 
 ## More details
 
-Read full introduction to the library in [the documentation](doc/introduction.md).
+Read full introduction to the library in [the documentation](https://github.com/yandex/city-services-pub/blob/main/yx_scope/packages/yx_scope_flutter/doc/introduction.md).
