@@ -2,11 +2,10 @@ name: CI for PRs
 
 on:
   pull_request:
-    paths-ignore:
-      - "**.md"
     paths:
       - "**/yx_scope/**"
       - "**/.github/**"
+      - "!**.md"
     branches:
       - main
 
