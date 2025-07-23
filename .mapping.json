@@ -3,7 +3,6 @@
   ".":"flutter/pro/opensource",
   "CONTRIBUTING.md":"flutter/pro/opensource/CONTRIBUTING.md",
   "README.md":"flutter/pro/opensource/README.md",
-  "yx_scope/.github/workflows/pr.yaml":"flutter/pro/opensource/yx_scope/.github/workflows/pr.yaml",
   "yx_scope/.gitignore":"flutter/pro/opensource/yx_scope/.gitignore",
   "yx_scope/AUTHORS":"flutter/pro/opensource/yx_scope/AUTHORS",
   "yx_scope/CONTRIBUTING.md":"flutter/pro/opensource/yx_scope/CONTRIBUTING.md",

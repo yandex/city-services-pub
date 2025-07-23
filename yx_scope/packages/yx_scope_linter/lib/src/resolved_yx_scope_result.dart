@@ -43,13 +43,13 @@ class ResolvedYXScopeResult {
   /// from [element]
   ClassDeclaration? classDeclarationByElement(Element element) {
     for (final unit in units) {
-      final declaration = unit.declarations
+      final declarations = unit.declarations
           .where((declaration) => declaration.declaredElement == element)
-          .whereType<ClassDeclaration>()
-          .firstOrNull;
-      if (declaration != null) {
-        return declaration;
+          .whereType<ClassDeclaration>();
+      if (declarations.isEmpty) {
+        return null;
       }
+      return declarations.first;
     }
     return null;
   }
