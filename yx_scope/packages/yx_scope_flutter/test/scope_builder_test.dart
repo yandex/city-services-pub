@@ -15,7 +15,11 @@ class AppScopeHolder extends yx_scope.ScopeHolder<AppScopeContainer> {
 }
 
 class ScopeBuilderApp extends StatefulWidget {
-  const ScopeBuilderApp({super.key});
+  final bool forceOneApp;
+  const ScopeBuilderApp({
+    super.key,
+    this.forceOneApp = false,
+  });
 
   @override
   State<ScopeBuilderApp> createState() => _AppState();
@@ -42,21 +46,28 @@ class _AppState extends State<ScopeBuilderApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopeProvider(
-      holder: _appScopeHolder,
-      child: ScopeBuilderTestWidget(
-        secondAppScopeHolder: _secondAppScopeHolder,
-      ),
-    );
+    return widget.forceOneApp
+        ? ScopeBuilderTestWidget(
+            secondAppScopeHolder: _secondAppScopeHolder,
+            forceOneApp: widget.forceOneApp,
+          )
+        : ScopeProvider(
+            holder: _appScopeHolder,
+            child: ScopeBuilderTestWidget(
+              secondAppScopeHolder: _secondAppScopeHolder,
+            ),
+          );
   }
 }
 
 class ScopeBuilderTestWidget extends StatefulWidget {
   final AppScopeHolder secondAppScopeHolder;
+  final bool forceOneApp;
 
   const ScopeBuilderTestWidget({
     super.key,
     required this.secondAppScopeHolder,
+    this.forceOneApp = false,
   });
 
   @override
@@ -71,13 +82,14 @@ class _ScopeBuilderTestWidgetState extends State<ScopeBuilderTestWidget> {
     return ScopeBuilder<AppScopeContainer>.withPlaceholder(
       // Replace ScopeHolder that ScopeBuilder will take from
       // ScopeProvider as InheritedWidget to another ScopeHolder
-      holder: showSecondApp ? widget.secondAppScopeHolder : null,
+      holder: widget.forceOneApp || showSecondApp
+          ? widget.secondAppScopeHolder
+          : null,
       builder: (context, appScope) {
         return MaterialApp(
           home: Scaffold(
             body: Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(appScope.counterProviderDep.get.count.toString()),
                   ElevatedButton(
@@ -163,5 +175,15 @@ void main() {
     expect(counter.count, 0);
     appScopeHolder.create();
     expect(counter.count, 1);
+  });
+
+  testWidgets(
+      'ScopeBuilder should not throw exception when there is no ScopeProvider in context but it is passed as argument',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const ScopeBuilderApp(forceOneApp: true));
+    await tester.tap(find.byType(ElevatedButton));
+    await tester.pump();
+    final dynamic exception = tester.takeException();
+    expect(exception, isNull);
   });
 }

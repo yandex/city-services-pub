@@ -1,6 +1,6 @@
 name: yx_scope_flutter
 description: An adapter package that provides yx_scope widgets for Flutter UI integration
-version: 1.1.1
+version: 1.1.2
 repository: https://github.com/yandex/city-services-pub/tree/main/yx_scope/packages/yx_scope_flutter
 issue_tracker: https://github.com/yandex/city-services-pub/issues
 topics:

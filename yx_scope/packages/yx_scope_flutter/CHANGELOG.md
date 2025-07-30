@@ -1,3 +1,9 @@
+## 1.1.2 - 2025.07.30
+
+* Fix: ScopeBuilder didUpdateWidget throw error if there is no 
+parent ScopeProvider but scopeHolder passed as argument
+* ScopeBuilder test added
+
 ## 1.1.1 - 2025.07.08
 
 * Documentation links fixed
