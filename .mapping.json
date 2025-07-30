@@ -1,6 +1,7 @@
 {
   "":"flutter/pro/opensource",
   ".":"flutter/pro/opensource",
+  ".github/workflows/yx_scope_pr.yaml":"flutter/pro/opensource/.github/workflows/yx_scope_pr.yaml",
   "CONTRIBUTING.md":"flutter/pro/opensource/CONTRIBUTING.md",
   "README.md":"flutter/pro/opensource/README.md",
   "yx_scope/.gitignore":"flutter/pro/opensource/yx_scope/.gitignore",
