@@ -32,9 +32,10 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
             'Both depObservers and depListeners passed as arguments to ScopeHolder. Consider using only depObservers'),
         assert(!(asyncDepListeners != null && asyncDepObservers != null),
             'Both asyncDepObservers and asyncDepListeners passed as arguments to ScopeHolder. Consider using only asyncDepObservers'),
-        _scopeObserverInternal = ScopeObserverInternal(scopeObservers),
-        _depObservers = depObservers,
-        _asyncDepObservers = asyncDepObservers,
+        _scopeObserverInternal =
+            ScopeObserverInternal(scopeObservers ?? scopeListeners),
+        _depObservers = depObservers ?? depListeners,
+        _asyncDepObservers = asyncDepObservers ?? asyncDepListeners,
         super(ScopeState.none());
 
   /// Initialize scope. [Scope] becomes available and everyone can

@@ -1,3 +1,7 @@
+## 1.1.2 - 2025.08.01
+
+* Fix: ScopeListners/DepListeners/AsyncDepListeners usage
+
 ## 1.1.1 - 2025.07.08
 
 * Documentation links fixed
