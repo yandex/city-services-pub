@@ -1,6 +1,12 @@
 ## yx_scope
 
-yx_scope is a compile-safe DI framework with advanced scoping capabilities.
+<div align="center">
+<img src="https://github.com/yandex/city-services-pub/blob/main/yx_scope/assets/logos/yx_scope.webp?raw=true" width="200" alt="The yx_scope package logo"/>
+
+**yx_scope is a compile-safe DI framework with advanced scoping capabilities.**
+
+[![Pub Version](https://img.shields.io/pub/v/yx_scope)](https://pub.dev/packages/yx_scope)
+</div>
 
 ## Library Components
 

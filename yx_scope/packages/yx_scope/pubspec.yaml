@@ -19,3 +19,6 @@ dev_dependencies:
   test: ^1.16.0
   lints: ^2.0.1
 
+screenshots:
+  - description: The yx_scope package logo
+    path: screenshots/yx_scope_logo.webp
