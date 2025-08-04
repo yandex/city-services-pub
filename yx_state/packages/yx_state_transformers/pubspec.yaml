@@ -4,7 +4,7 @@ version: 1.0.0
 repository: https://github.com/yandex/city-services-pub/tree/main/yx_state/packages/yx_state_transformers
 issue_tracker: https://github.com/yandex/city-services-pub/issues
 topics:
-  - yx_state
+  - yx-state
   - state-management
   - concurrency
 
