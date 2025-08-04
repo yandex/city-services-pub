@@ -1,0 +1,22 @@
+name: yx_state_flutter
+description: Flutter widgets for yx_state.
+version: 1.0.0
+repository: https://github.com/yandex/city-services-pub/tree/main/yx_state/packages/yx_state_flutter
+issue_tracker: https://github.com/yandex/city-services-pub/issues
+publish_to: none
+topics:
+  - yx_state
+  - state-management
+
+environment:
+  sdk: '>=2.19.0 <4.0.0'
+
+dependencies:
+  yx_state: ^1.0.0
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+

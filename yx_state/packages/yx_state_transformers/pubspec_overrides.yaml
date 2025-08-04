@@ -1,0 +1,3 @@
+dependency_overrides:
+  yx_state:
+    path: ../yx_state

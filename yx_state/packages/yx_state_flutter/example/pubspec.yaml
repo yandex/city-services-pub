@@ -1,0 +1,22 @@
+name: yx_state_flutter_example
+description: "An example for yx_state_flutter"
+version: 1.0.0
+publish_to: 'none'
+
+environment:
+  sdk: ">=2.19.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  yx_state:
+    path: ../../yx_state
+  yx_state_flutter:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
