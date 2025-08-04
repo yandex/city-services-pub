@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/yandex/city-services-pub/blob/main/yx_state/assets/logos/yx_state.webp" width="200" alt="The yx_state package logo" />
+<img src="https://github.com/yandex/city-services-pub/blob/main/yx_state/assets/logos/yx_state.webp?raw=true" width="200" alt="The yx_state package logo" />
 
 **A state management library for Dart/Flutter applications.**
 
