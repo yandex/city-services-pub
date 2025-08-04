@@ -3,7 +3,6 @@ description: Custom task transformers for yx_state
 version: 1.0.0
 repository: https://github.com/yandex/city-services-pub/tree/main/yx_state/packages/yx_state_transformers
 issue_tracker: https://github.com/yandex/city-services-pub/issues
-publish_to: none
 topics:
   - yx_state
   - state-management
