@@ -47,8 +47,8 @@ abstract class ScopeModule<Container extends BaseScopeContainer> {
   @protected
   AsyncDep<Value> rawAsyncDep<Value>(
     DepBuilder<Value> builder, {
-    required AsyncDepCallback<Value> init,
-    required AsyncDepCallback<Value> dispose,
+    FutureOr<void> Function(Value dep)? init,
+    FutureOr<void> Function(Value dep)? dispose,
     String? name,
   }) =>
       container.rawAsyncDep(
