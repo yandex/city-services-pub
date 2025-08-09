@@ -150,15 +150,15 @@ abstract class BaseScopeContainer extends Scope {
   @protected
   AsyncDep<Value> rawAsyncDep<Value>(
     DepBuilder<Value> builder, {
-    required AsyncDepCallback<Value> init,
-    required AsyncDepCallback<Value> dispose,
+    FutureOr<void> Function(Value dep)? init,
+    FutureOr<void> Function(Value dep)? dispose,
     String? name,
   }) =>
       AsyncDep._(
         this,
         builder,
-        init: init,
-        dispose: dispose,
+        init: (dep) async => await init?.call(dep),
+        dispose: (dep) async => await dispose?.call(dep),
         name: name,
         observer: _asyncDepObserver,
       );
