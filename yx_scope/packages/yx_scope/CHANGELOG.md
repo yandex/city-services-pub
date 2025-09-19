@@ -1,3 +1,6 @@
+## 1.1.3 - unpublished
+* Added CustomDep/CustomAsyncDep classes for creating custom dependency types
+
 ## 1.1.2 - 2025.08.01
 
 * Fix: ScopeListners/DepListeners/AsyncDepListeners usage

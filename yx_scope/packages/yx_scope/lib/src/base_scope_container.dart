@@ -19,6 +19,8 @@ part 'core/scope_state_holder.dart';
 
 part 'core_scope_holder.dart';
 
+part 'custom_dep.dart';
+
 part 'dep.dart';
 
 part 'monitoring/observers_internal.dart';

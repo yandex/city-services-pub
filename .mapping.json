@@ -35,6 +35,7 @@
   "yx_scope/packages/yx_scope/lib/src/core/scope_state.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/lib/src/core/scope_state.dart",
   "yx_scope/packages/yx_scope/lib/src/core/scope_state_holder.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/lib/src/core/scope_state_holder.dart",
   "yx_scope/packages/yx_scope/lib/src/core_scope_holder.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/lib/src/core_scope_holder.dart",
+  "yx_scope/packages/yx_scope/lib/src/custom_dep.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/lib/src/custom_dep.dart",
   "yx_scope/packages/yx_scope/lib/src/dep.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/lib/src/dep.dart",
   "yx_scope/packages/yx_scope/lib/src/monitoring/listeners.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/lib/src/monitoring/listeners.dart",
   "yx_scope/packages/yx_scope/lib/src/monitoring/models/dep_id.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope/lib/src/monitoring/models/dep_id.dart",

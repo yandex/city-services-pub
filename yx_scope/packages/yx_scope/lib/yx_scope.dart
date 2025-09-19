@@ -6,7 +6,9 @@ export 'src/base_scope_container.dart'
         DepObserverInternal,
         AsyncDepObserverInternal,
         Entry,
-        TestableScopeStateHolder;
+        TestableScopeStateHolder,
+        CustomDep,
+        CustomAsyncDep;
 export 'src/core/async_lifecycle.dart';
 export 'src/core/scope_exception.dart';
 export 'src/core/scope_state.dart';
