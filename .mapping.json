@@ -134,6 +134,7 @@
   "yx_scope/packages/yx_scope_flutter/pubspec.yaml":"flutter/pro/opensource/yx_scope/packages/yx_scope_flutter/pubspec.yaml",
   "yx_scope/packages/yx_scope_flutter/pubspec_overrides.yaml":"flutter/pro/opensource/yx_scope/packages/yx_scope_flutter/pubspec_overrides.yaml",
   "yx_scope/packages/yx_scope_flutter/test/scope_builder_test.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope_flutter/test/scope_builder_test.dart",
+  "yx_scope/packages/yx_scope_flutter/test/scope_listener_test.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope_flutter/test/scope_listener_test.dart",
   "yx_scope/packages/yx_scope_flutter/test/scope_provider_test.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope_flutter/test/scope_provider_test.dart",
   "yx_scope/packages/yx_scope_flutter/test/test_utils.dart":"flutter/pro/opensource/yx_scope/packages/yx_scope_flutter/test/test_utils.dart",
   "yx_scope/packages/yx_scope_linter/.gitignore":"flutter/pro/opensource/yx_scope/packages/yx_scope_linter/.gitignore",

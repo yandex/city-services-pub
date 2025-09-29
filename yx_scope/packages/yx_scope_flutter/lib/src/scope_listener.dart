@@ -50,18 +50,11 @@ class ScopeListener<T> extends StatefulWidget {
 }
 
 class ScopeListenerState<T> extends State<ScopeListener<T>> {
-  late ScopeStateHolder<T?> _holder;
+  ScopeStateHolder<T?>? _holder;
   RemoveStateListener? _removeStateListener;
 
-  @override
-  void initState() {
-    super.initState();
-    _holder =
-        widget.holder ?? ScopeProvider.scopeHolderOf<T>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _subscribe();
-    });
-  }
+  ScopeStateHolder<T?> get _actualHolder =>
+      widget.holder ?? ScopeProvider.scopeHolderOf<T>(context);
 
   @override
   void dispose() {
@@ -72,30 +65,32 @@ class ScopeListenerState<T> extends State<ScopeListener<T>> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final holder =
-        widget.holder ?? ScopeProvider.scopeHolderOf<T>(context, listen: false);
-    if (holder != _holder) {
-      _holder = holder;
-      _unsubscribe();
-      _subscribe();
-    }
+
+    _handleHolderChanged();
   }
 
   @override
   void didUpdateWidget(covariant ScopeListener<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final oldHolder = oldWidget.holder ?? ScopeProvider.scopeHolderOf(context);
-    final currentHolder = widget.holder ?? oldHolder;
-    if (oldHolder != currentHolder) {
-      _holder = currentHolder;
-      _unsubscribe();
-      _subscribe();
-    }
+    _handleHolderChanged();
   }
 
-  void _subscribe() {
+  void _handleHolderChanged() {
+    final previous = _holder;
+    final current = _actualHolder;
+
+    if (previous == current) {
+      return;
+    }
+
+    _holder = current;
+    _unsubscribe();
+    _subscribe(current);
+  }
+
+  void _subscribe(ScopeStateHolder<T?> holder) {
     if (mounted) {
-      _removeStateListener = _holder.listen((scope) {
+      _removeStateListener = holder.listen((scope) {
         if (mounted) {
           widget.listener(context, scope);
         }

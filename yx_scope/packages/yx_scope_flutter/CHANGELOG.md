@@ -1,6 +1,10 @@
+## 1.1.3 - unpublished
+
+* Fix: handling of ScopeHolder state changes in ScopeListener subscription
+
 ## 1.1.2 - 2025.07.30
 
-* Fix: ScopeBuilder didUpdateWidget throw error if there is no 
+* Fix: ScopeBuilder didUpdateWidget throw error if there is no
 parent ScopeProvider but scopeHolder passed as argument
 * ScopeBuilder test added
 
@@ -11,7 +15,7 @@ parent ScopeProvider but scopeHolder passed as argument
 ## 1.1.0 - 2025.07.07
 
 * Fix: ScopeBuilder and ScopeListener fixes, tests added
-* Fix: mounted check added to _subscribe method  
+* Fix: mounted check added to _subscribe method
 * Add test for checking rebuilds only for dependent widgets
 * New Flutter version added to CI
 * Documentation fixes and updates
