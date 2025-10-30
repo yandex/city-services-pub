@@ -1,5 +1,9 @@
 part of 'base_scope_container.dart';
 
+/// Warning: Use this class with very caution.
+/// It is not recommended to use this class unless you absolutely need to.
+/// It is much easier to use the standard [Dep] class and it covers most of the use cases.
+///
 /// Abstract base class for creating custom dependency types.
 ///
 /// Use this class as a base when you need to create a specialized dependency
@@ -8,13 +12,19 @@ part of 'base_scope_container.dart';
 ///
 /// Example:
 /// ```dart
-/// class DatabaseDep extends CustomDep<Database> {
-///   DatabaseDep(BaseScopeContainer scope, String connectionString)
-///     : super(scope, () => Database.connect(connectionString));
+/// class DatabaseDep extends Dep<Database> {
+///   DatabaseDep._(BaseScopeContainer scope, String connectionString)
+///     : super._(
+///       scope,
+///       () => Database.connect(connectionString),
+///       DatabaseDepBehavior(),
+///     );
+/// }
 ///
+/// class DatabaseDepBehavior extends DepBehavior<Database, DatabaseDep> {
 ///   @override
-///   Database get get {
-///     final db = super.get;
+///   Database getValue(DepAccess<Database, DatabaseDep> access) {
+///     final db = super.getValue(access);
 ///     if (!db.isConnected) {
 ///       throw StateError('Database connection is not available');
 ///     }
@@ -34,9 +44,20 @@ abstract class CustomDep<Value> extends Dep<Value> {
     DepBuilder<Value> builder, {
     String? name,
     DepObserverInternal? observer,
-  }) : super._(scope, builder, name: name, observer: observer);
+    DepBehavior<Value, Dep<Value>>? behavior,
+  }) : super._(
+          scope,
+          builder,
+          behavior ?? CoreDepBehavior<Value, Dep<Value>>(),
+          name: name,
+          observer: observer,
+        );
 }
 
+/// Warning: Use this class with very caution.
+/// It is not recommended to use this class unless you absolutely need to.
+/// It is much easier to use the standard [AsyncDep] class and it covers most of the use cases.
+///
 /// Abstract base class for creating custom async dependency types.
 ///
 /// Use this class as a base when you need to create a specialized async dependency
@@ -60,6 +81,21 @@ abstract class CustomDep<Value> extends Dep<Value> {
 ///         },
 ///       );
 /// }
+///
+/// You can also pass a custom behavior to the dependency.
+///
+/// Example:
+/// ```dart
+/// class HttpClientDepBehavior extends AsyncDepBehavior<HttpClient, HttpClientDep> {
+///   @override
+///   HttpClient getValue(AsyncDepAccess<HttpClient, HttpClientDep> access) {
+///     final client = access.dep.get;
+///     if(!client.loggedIn) {
+///       throw StateError('Client is not logged in');
+///     }
+///     return client;
+///   }
+/// }
 /// ```
 abstract class CustomAsyncDep<Value> extends AsyncDep<Value> {
   /// Creates a custom async dependency.
@@ -77,6 +113,14 @@ abstract class CustomAsyncDep<Value> extends AsyncDep<Value> {
     required AsyncDepCallback<Value> dispose,
     String? name,
     AsyncDepObserverInternal? observer,
-  }) : super._(scope, builder,
-            name: name, observer: observer, init: init, dispose: dispose);
+    AsyncDepBehavior<Value, AsyncDep<Value>>? behavior,
+  }) : super._(
+          scope,
+          builder,
+          behavior ?? CoreAsyncDepBehavior<Value, AsyncDep<Value>>(),
+          name: name,
+          observer: observer,
+          init: init,
+          dispose: dispose,
+        );
 }

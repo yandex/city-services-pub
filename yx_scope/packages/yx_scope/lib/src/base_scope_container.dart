@@ -120,7 +120,8 @@ abstract class BaseScopeContainer extends Scope {
     DepBuilder<Value> builder, {
     String? name,
   }) =>
-      Dep._(this, builder, name: name, observer: _depObserver);
+      Dep._(this, builder, CoreDepBehavior<Value, Dep<Value>>(),
+          name: name, observer: _depObserver);
 
   /// Exactly the same as [BaseScopeContainer.dep] but you only allowed
   /// to declare [AsyncLifecycle] dependencies using this method.
@@ -159,6 +160,7 @@ abstract class BaseScopeContainer extends Scope {
       AsyncDep._(
         this,
         builder,
+        CoreAsyncDepBehavior<Value, AsyncDep<Value>>(),
         init: init,
         dispose: dispose,
         name: name,
@@ -169,7 +171,7 @@ abstract class BaseScopeContainer extends Scope {
 
   void _unregister() {
     for (final dep in _container.reversed) {
-      dep._unregister();
+      dep._behavior.unregister(dep._access);
     }
     _container.clear();
   }

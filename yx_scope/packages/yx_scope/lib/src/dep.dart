@@ -26,6 +26,7 @@ class DepMeta<T> {
 /// A description for a dependency.
 /// Basically this is a factory class for any custom entity.
 class Dep<Value> {
+  final DepBehavior<Value, Dep<Value>> _behavior;
   final String? _name;
 
   final BaseScopeContainer _scope;
@@ -33,30 +34,72 @@ class Dep<Value> {
   final DepObserverInternal? _observer;
 
   late final DepId _id;
-
-  _DepValue<Value>? _value;
-
-  var _registered = false;
+  DepAccess<Value, Dep<Value>> get _access => DepAccess(this);
 
   Dep._(
     this._scope,
-    this._builder, {
+    this._builder,
+    this._behavior, {
     String? name,
     DepObserverInternal? observer,
   })  : _name = name,
         _observer = observer {
     _id = DepId(Value, hashCode, _name);
-    _scope._registerDep(this);
-    _registered = true;
+    _behavior.register(_access);
   }
 
   /// Returns an entity by request
-  Value get get {
+  Value get get => _behavior.getValue(_access);
+}
+
+/// A description for a dependency that implements [AsyncLifecycle].
+/// This dependency will be initialized and disposed along with [BaseScopeContainer].
+class AsyncDep<Value> extends Dep<Value> {
+  final AsyncDepCallback<Value> _initCallback;
+  final AsyncDepCallback<Value> _disposeCallback;
+
+  final AsyncDepObserverInternal? _asyncDepObserver;
+  final AsyncDepBehavior<Value, AsyncDep<Value>> _asyncDepBehavior;
+
+  @override
+  AsyncDepAccess<Value, AsyncDep<Value>> get _access => AsyncDepAccess(this);
+
+  AsyncDep._(
+    BaseScopeContainer scope,
+    DepBuilder<Value> builder,
+    AsyncDepBehavior<Value, AsyncDep<Value>> behavior, {
+    required AsyncDepCallback<Value> init,
+    required AsyncDepCallback<Value> dispose,
+    String? name,
+    AsyncDepObserverInternal? observer,
+  })  : _initCallback = init,
+        _disposeCallback = dispose,
+        _asyncDepObserver = observer,
+        _asyncDepBehavior = behavior,
+        super._(scope, builder, behavior, name: name, observer: observer);
+
+  @override
+  Value get get => _asyncDepBehavior.getValue(_access);
+}
+
+class _DepValue<T> {
+  final T value;
+
+  const _DepValue(this.value);
+}
+
+class CoreDepBehavior<V, D extends Dep<V>> extends DepBehavior<V, D> {
+  _DepValue<V>? _value;
+
+  var _registered = false;
+
+  @override
+  V getValue(DepAccess<V, D> access) {
     if (!_registered) {
       throw ScopeException(
-        'You are trying to get an instance of $Value '
-        'from the Dep ${_name ?? hashCode.toString()}, '
-        'but the Scope ${_scope._name ?? _scope.hashCode.toString()} has been disposed. '
+        'You are trying to get an instance of $V '
+        'from the Dep ${access.name ?? access.id.toString()}, '
+        'but the Scope ${access.scope._name ?? access.scope.hashCode.toString()} has been disposed. '
         'Probably you stored an instance of the Dep '
         'somewhere away from the Scope. '
         'Do not keep a Dep instance separately from it\'s Scope, '
@@ -69,20 +112,27 @@ class Dep<Value> {
       return crtValue.value;
     } else {
       try {
-        _observer?.onValueStartCreate(this);
-        final newValue = _builder();
+        access.observer?.onValueStartCreate(access.dep);
+        final newValue = access.builder();
 
         _value = _DepValue(newValue);
-        _observer?.onValueCreated(this, newValue);
+        access.observer?.onValueCreated(access.dep, newValue);
         return newValue;
       } on Object catch (e, s) {
-        _observer?.onValueCreateFailed(this, e, s);
+        access.observer?.onValueCreateFailed(access.dep, e, s);
         rethrow;
       }
     }
   }
 
-  void _unregister() {
+  @override
+  void register(DepAccess access) {
+    access.scope._registerDep(access.dep);
+    _registered = true;
+  }
+
+  @override
+  void unregister(DepAccess access) {
     if (!_registered) {
       throw ScopeError(
         'Dep._unregister() is called when it\'s not really registered yet — '
@@ -92,77 +142,94 @@ class Dep<Value> {
     }
     final value = _value?.value;
     _value = null;
-    _observer?.onValueCleared(this, value);
+    access.observer?.onValueCleared(access.dep, value);
     _registered = false;
   }
 }
 
-/// A description for a dependency that implements [AsyncLifecycle].
-/// This dependency will be initialized and disposed along with [BaseScopeContainer].
-class AsyncDep<Value> extends Dep<Value> {
-  final AsyncDepCallback<Value> _initCallback;
-  final AsyncDepCallback<Value> _disposeCallback;
-
-  final AsyncDepObserverInternal? _asyncDepObserver;
-
+class CoreAsyncDepBehavior<V, D extends AsyncDep<V>>
+    extends CoreDepBehavior<V, D> implements AsyncDepBehavior<V, D> {
   var _initialized = false;
-
-  AsyncDep._(
-    BaseScopeContainer scope,
-    DepBuilder<Value> builder, {
-    required AsyncDepCallback<Value> init,
-    required AsyncDepCallback<Value> dispose,
-    String? name,
-    AsyncDepObserverInternal? observer,
-  })  : _initCallback = init,
-        _disposeCallback = dispose,
-        _asyncDepObserver = observer,
-        super._(scope, builder, name: name, observer: observer);
-
-  Future<void> _init() async {
-    final value = super.get;
+  @override
+  Future<void> init(AsyncDepAccess<V, D> access) async {
+    final value = super.getValue(access);
     try {
-      _asyncDepObserver?.onDepStartInitialize(this);
-      await _initCallback(value);
+      access.asyncDepObserver?.onDepStartInitialize(access.dep);
+      await access.initCallback(value);
       _initialized = true;
-      _asyncDepObserver?.onDepInitialized(this);
+      access.asyncDepObserver?.onDepInitialized(access.dep);
     } on Object catch (e, s) {
-      _asyncDepObserver?.onDepInitializeFailed(this, e, s);
-      rethrow;
-    }
-  }
-
-  Future<void> _dispose() async {
-    assert(
-      _initialized,
-      'Dispose of $runtimeType has been called without initialization',
-    );
-    final value = get;
-    try {
-      _initialized = false;
-      _asyncDepObserver?.onDepStartDispose(this);
-      await _disposeCallback(value);
-      _asyncDepObserver?.onDepDisposed(this);
-    } on Object catch (e, s) {
-      _asyncDepObserver?.onDepDisposeFailed(this, e, s);
+      access.asyncDepObserver?.onDepInitializeFailed(access.dep, e, s);
       rethrow;
     }
   }
 
   @override
-  Value get get {
+  Future<void> dispose(AsyncDepAccess<V, D> access) async {
     assert(
       _initialized,
-      'You have forgotten to add $runtimeType to initializeQueue or it '
+      'Dispose of ${access.dep.runtimeType} has been called without initialization',
+    );
+    final value = super.getValue(access);
+    try {
+      _initialized = false;
+      access.asyncDepObserver?.onDepStartDispose(access.dep);
+      await access.disposeCallback(value);
+      access.asyncDepObserver?.onDepDisposed(access.dep);
+    } on Object catch (e, s) {
+      access.asyncDepObserver?.onDepDisposeFailed(access.dep, e, s);
+      rethrow;
+    }
+  }
+
+  @override
+  V getValue(DepAccess<V, D> access) {
+    assert(
+      _initialized,
+      'You have forgotten to add ${access.dep.runtimeType} to initializeQueue or it '
       'has been used before initialization by another dep. '
       'Try to reorder deps in initializeQueue.',
     );
-    return super.get;
+    return super.getValue(access);
   }
 }
 
-class _DepValue<T> {
-  final T value;
+/// A class that describes the behavior of a dependency.
+/// It is helpful to create a custom behavior for a dependency.
+abstract class DepBehavior<V, D extends Dep<V>> {
+  void register(DepAccess access);
 
-  const _DepValue(this.value);
+  void unregister(DepAccess access);
+
+  V getValue(DepAccess<V, D> access);
+}
+
+abstract class AsyncDepBehavior<V, D extends AsyncDep<V>>
+    extends DepBehavior<V, D> {
+  Future<void> init(AsyncDepAccess<V, D> access);
+
+  Future<void> dispose(AsyncDepAccess<V, D> access);
+}
+
+class DepAccess<V, D extends Dep<V>> {
+  final D dep;
+
+  String? get name => dep._name;
+
+  BaseScopeContainer get scope => dep._scope;
+  DepBuilder<V> get builder => dep._builder;
+  DepObserverInternal? get observer => dep._observer;
+
+  DepId get id => dep._id;
+
+  DepAccess(this.dep);
+}
+
+class AsyncDepAccess<V, D extends AsyncDep<V>> extends DepAccess<V, D> {
+  AsyncDepCallback<V> get initCallback => dep._initCallback;
+  AsyncDepCallback<V> get disposeCallback => dep._disposeCallback;
+
+  AsyncDepObserverInternal? get asyncDepObserver => dep._asyncDepObserver;
+
+  AsyncDepAccess(super.dep);
 }

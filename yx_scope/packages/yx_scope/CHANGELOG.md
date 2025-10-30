@@ -1,3 +1,6 @@
+## 1.1.4 - unpublished
+* Added behaviour and dep access to improve deps customization
+
 ## 1.1.3 - unpublished
 * Added CustomDep/CustomAsyncDep classes for creating custom dependency types
 

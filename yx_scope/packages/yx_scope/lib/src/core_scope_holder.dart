@@ -155,7 +155,7 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
                 );
               }
               Logger.debug('($scopeType) Initializing: $depType');
-              return dep._init().then(
+              return dep._asyncDepBehavior.init(dep._access).then(
                 (_) {
                   initialized[i].add(dep);
                   Logger.debug('($scopeType) Initialized: $depType');
@@ -312,8 +312,8 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
             final scopeType = Container;
             final depType = dep.runtimeType;
             Logger.debug('($scopeType) Disposing: $depType');
-            return dep
-                ._dispose()
+            return dep._asyncDepBehavior
+                .dispose(dep._access)
                 .then((_) => Logger.debug('($scopeType) Disposed: $depType'))
                 // ignore: avoid_types_on_closure_parameters
                 .catchError((Object e, StackTrace s) {
