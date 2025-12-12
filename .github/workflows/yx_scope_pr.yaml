@@ -57,7 +57,7 @@ jobs:
       fail-fast: false
       matrix:
         # Check the library against the most recent version and the previous minor version
-        flutter-version: [3.38.4, 3.35.7, 3.32.8, 3.29.3, 3.27.3, 3.24.5]
+        flutter-version: [3.38.4, 3.35.7, 3.32.8, 3.29.3, 3.27.3]
 
     defaults:
       run:

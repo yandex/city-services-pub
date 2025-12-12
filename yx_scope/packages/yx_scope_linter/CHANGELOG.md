@@ -4,6 +4,7 @@
 * custom_lint_builder ^0.6.2 -> ^0.7.0;
 * analyzer_plugin ^0.11.2 -> ^0.13.4;
 * analyzer ^6.4.1 -> ^7.0.0
+* min Dart version 2.27.0 -> 3.6.0
 
 ## 0.1.4 - 2025.07.08
 

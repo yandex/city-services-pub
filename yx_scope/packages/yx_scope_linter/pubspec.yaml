@@ -10,7 +10,7 @@ topics:
   - dependency-management
 
 environment:
-  sdk: '>=2.19.6 <4.0.0'
+  sdk: '>=3.6.0 <4.0.0'
 
 dependencies:
   analyzer: '>=6.4.1 <8.0.0'
@@ -20,4 +20,5 @@ dependencies:
 
 dev_dependencies:
   lints: ^2.0.0
+  # TODO: migrate to analysis_server_plugin — https://github.com/dart-lang/sdk/blob/main/pkg/analysis_server_plugin/doc/writing_a_plugin.md
   custom_lint: '>=0.6.8 <0.8.0'
