@@ -1,4 +1,8 @@
-## 1.1.3 - unpublished
+## 1.2.0 - 2025.12.18
+
+* Updated yx_scope dependency to 1.2.0
+
+**1.1.3 - unpublished**
 
 * Fix: handling of ScopeHolder state changes in ScopeListener subscription
 

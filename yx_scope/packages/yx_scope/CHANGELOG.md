@@ -1,7 +1,12 @@
-## 1.1.4 - unpublished
+## 1.2.0 - 2025.12.18
+
+* Guide documentation completed
+* Customizable behavior for Dep and AsyncDep
+
+**1.1.4 - unpublished**
 * Added behaviour and dep access to improve deps customization
 
-## 1.1.3 - unpublished
+**1.1.3 - unpublished**
 * Added CustomDep/CustomAsyncDep classes for creating custom dependency types
 
 ## 1.1.2 - 2025.08.01
