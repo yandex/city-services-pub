@@ -25,7 +25,7 @@ class ScopeProvider<T> extends StatelessWidget {
     super.key,
   });
 
-  /// This method provide a nullable cope, if there is a ScopeProvider widget higher up the tree
+  /// This method provide a nullable scope, if there is a ScopeProvider widget higher up the tree
   ///
   /// If you want to use this method with the flag [listen] = true see more about the method
   /// [BuildContext.dependOnInheritedWidgetOfExactType] to learn when to use this method.
