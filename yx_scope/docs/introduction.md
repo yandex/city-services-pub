@@ -533,7 +533,7 @@ gradually automate them over time.
 We've now covered the fundamental principles of how the `yx_scope` library works, from global
 container basics to scope separation via interfaces and how to link scopes together.
 
-You can find a more detailed [app example](../example) using scopes in the `yx_scope_flutter`
+You can find a more detailed [app example](../packages/yx_scope_flutter/example) using scopes in the `yx_scope_flutter`
 repository. It also includes an example of creating dynamic scopes of the same type, such
 as `OrderScope` for handling multiple orders.
 
