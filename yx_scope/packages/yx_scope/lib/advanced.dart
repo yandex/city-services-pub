@@ -9,3 +9,4 @@ export 'src/base_scope_container.dart'
         AsyncDepAccess,
         CoreDepBehavior,
         CoreAsyncDepBehavior;
+export 'src/scope_holder_behavior.dart';

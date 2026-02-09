@@ -11,6 +11,7 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
   final ScopeObserverInternal _scopeObserverInternal;
   final List<DepObserver>? _depObservers;
   final List<AsyncDepObserver>? _asyncDepObservers;
+  final ScopeHolderBehavior<Scope, Container> _behavior;
 
   Completer? _waitLifecycleCompleter;
 
@@ -18,6 +19,7 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
+    ScopeHolderBehavior<Scope, Container>? behavior,
     // ignore: deprecated_member_use_from_same_package
     @Deprecated('Use scopeObservers instead')
     List<ScopeListener>? scopeListeners,
@@ -36,6 +38,7 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
             ScopeObserverInternal(scopeObservers ?? scopeListeners),
         _depObservers = depObservers ?? depListeners,
         _asyncDepObservers = asyncDepObservers ?? asyncDepListeners,
+        _behavior = behavior ?? const CoreScopeHolderBehavior(),
         super(ScopeState.none());
 
   /// Initialize scope. [Scope] becomes available and everyone can
@@ -148,10 +151,10 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
               final scopeType = Container;
               final depType = dep.runtimeType;
               if (dep._scope != scope) {
-                throw ScopeException(
-                  'You are initializing async dep $depType '
-                  'within ${scope.runtimeType}#${scope.hashCode}, '
-                  'but the dep declared in ${dep._scope.runtimeType}#${dep._scope.hashCode}',
+                _behavior.onDepDeclarationContainerMismatch(
+                  dep: dep,
+                  depContainer: dep._scope,
+                  holderContainer: scope,
                 );
               }
               Logger.debug('($scopeType) Initializing: $depType');

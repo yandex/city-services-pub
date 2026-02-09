@@ -13,6 +13,7 @@ import 'monitoring/models/value_meta.dart';
 import 'monitoring/raw_observers.dart';
 import 'monitoring/scope_observatory_internal.dart';
 import 'scope_container.dart';
+import 'scope_holder_behavior.dart';
 import 'scope_state_streamable.dart';
 
 part 'core/scope_state_holder.dart';

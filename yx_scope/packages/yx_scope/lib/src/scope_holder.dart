@@ -51,6 +51,7 @@ abstract class ScopeHolder<Container extends ScopeContainer>
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
+    ScopeHolderBehavior<Container, Container>? behavior,
   }) : super(
           scopeObservers: scopeObservers,
           depObservers: depObservers,
@@ -61,6 +62,7 @@ abstract class ScopeHolder<Container extends ScopeContainer>
           depListeners: depListeners,
           // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
+          behavior: behavior,
         );
 }
 
@@ -108,6 +110,7 @@ abstract class ChildScopeHolder<Container extends ChildScopeContainer<Parent>,
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
+    ScopeHolderBehavior<Container, Container>? behavior,
   }) : super(
           parent,
           scopeObservers: scopeObservers,
@@ -119,6 +122,7 @@ abstract class ChildScopeHolder<Container extends ChildScopeContainer<Parent>,
           depListeners: depListeners,
           // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
+          behavior: behavior,
         );
 }
 
@@ -156,6 +160,7 @@ abstract class DataScopeHolder<Container extends DataScopeContainer<Data>,
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
+    ScopeHolderBehavior<Container, Container>? behavior,
   }) : super(
           scopeObservers: scopeObservers,
           depObservers: depObservers,
@@ -166,6 +171,7 @@ abstract class DataScopeHolder<Container extends DataScopeContainer<Data>,
           depListeners: depListeners,
           // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
+          behavior: behavior,
         );
 }
 
@@ -216,6 +222,7 @@ abstract class ChildDataScopeHolder<
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
+    ScopeHolderBehavior<Container, Container>? behavior,
   }) : super(
           parent,
           scopeObservers: scopeObservers,
@@ -227,6 +234,7 @@ abstract class ChildDataScopeHolder<
           depListeners: depListeners,
           // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
+          behavior: behavior,
         );
 }
 
@@ -249,6 +257,7 @@ abstract class BaseScopeHolder<Scope, Container extends ScopeContainer>
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
+    ScopeHolderBehavior<Scope, Container>? behavior,
   }) : super(
           scopeObservers: scopeObservers,
           depObservers: depObservers,
@@ -259,6 +268,7 @@ abstract class BaseScopeHolder<Scope, Container extends ScopeContainer>
           depListeners: depListeners,
           // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
+          behavior: behavior,
         );
 
   @protected
@@ -293,6 +303,7 @@ abstract class BaseChildScopeHolder<
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
+    ScopeHolderBehavior<ScopeType, Container>? behavior,
   }) : super(
           scopeObservers: scopeObservers,
           depObservers: depObservers,
@@ -303,6 +314,7 @@ abstract class BaseChildScopeHolder<
           depListeners: depListeners,
           // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
+          behavior: behavior,
         ) {
     this.parent = parent;
   }
@@ -335,6 +347,7 @@ abstract class BaseDataScopeHolder<
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
+    ScopeHolderBehavior<Scope, Container>? behavior,
   }) : super(
           scopeObservers: scopeObservers,
           depObservers: depObservers,
@@ -345,6 +358,7 @@ abstract class BaseDataScopeHolder<
           depListeners: depListeners,
           // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
+          behavior: behavior,
         );
 
   @protected
@@ -382,6 +396,7 @@ abstract class BaseChildDataScopeHolder<
     List<ScopeObserver>? scopeObservers,
     List<DepObserver>? depObservers,
     List<AsyncDepObserver>? asyncDepObservers,
+    ScopeHolderBehavior<ScopeType, Container>? behavior,
   }) : super(
           scopeObservers: scopeObservers,
           depObservers: depObservers,
@@ -392,6 +407,7 @@ abstract class BaseChildDataScopeHolder<
           depListeners: depListeners,
           // ignore: deprecated_member_use_from_same_package
           asyncDepListeners: asyncDepListeners,
+          behavior: behavior,
         ) {
     this.parent = parent;
   }

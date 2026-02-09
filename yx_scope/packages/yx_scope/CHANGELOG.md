@@ -1,3 +1,6 @@
+**1.2.1 - unpublished**
+* Added ScopeHolderBehavior
+
 ## 1.2.0 - 2025.12.18
 
 * Guide documentation completed
