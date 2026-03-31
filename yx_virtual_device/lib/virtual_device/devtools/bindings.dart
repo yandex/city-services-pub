@@ -80,11 +80,12 @@ class VirtualWidgetsFlutterBinding extends BindingBase
     if (device != null) {
       final size = device.screenSizeOn(orientation) * device.pixelRatio;
       final padding = VirtualViewPadding.fromEdgeInsets(
-          ((_orientation == Orientation.portrait
-                      ? device.safeAreas
-                      : device.rotatedSafeAreas) ??
-                  device.safeAreas) *
-              device.pixelRatio);
+        ((_orientation == Orientation.portrait
+                    ? device.safeAreas
+                    : device.rotatedSafeAreas) ??
+                device.safeAreas) *
+            device.pixelRatio,
+      );
 
       platformDispatcher.implicitView
         ?..physicalSize = size
@@ -104,8 +105,10 @@ class VirtualWidgetsFlutterBinding extends BindingBase
     platformDispatcher: super.platformDispatcher,
   );
 
-  @Deprecated('Deprecated to prepare for the upcoming multi-window support. '
-      'This feature was deprecated after v3.9.0-0.1.pre.')
+  @Deprecated(
+    'Deprecated to prepare for the upcoming multi-window support. '
+    'This feature was deprecated after v3.9.0-0.1.pre.',
+  )
   @override
   late VirtualWindow window = VirtualWindow.fromPlatformDispatcher(
     platformDispatcher: platformDispatcher,

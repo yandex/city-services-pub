@@ -18,11 +18,11 @@ class VirtualViewConfiguration extends ViewConfiguration {
   }
 
   VirtualViewConfiguration({ViewConfiguration? parent})
-      : assert(
-          parent is! VirtualViewConfiguration,
-          'Parent view configuration must be non virtual!',
-        ),
-        _parent = parent;
+    : assert(
+        parent is! VirtualViewConfiguration,
+        'Parent view configuration must be non virtual!',
+      ),
+      _parent = parent;
 
   BoxConstraints? _logicalConstraints;
 
@@ -100,6 +100,7 @@ class VirtualViewConfiguration extends ViewConfiguration {
       hashCode == other.hashCode;
 
   @override
-  String toString() => 'parent: ${parent.toString()}\n'
+  String toString() =>
+      'parent: ${parent.toString()}\n'
       'result: $logicalConstraints at ${debugFormatDouble(devicePixelRatio)}x';
 }

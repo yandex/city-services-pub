@@ -24,11 +24,7 @@ class DeviceIdentifier {
   final TargetPlatform platform;
 
   /// Private constructor.
-  const DeviceIdentifier(
-    this.platform,
-    this.type,
-    this.name,
-  );
+  const DeviceIdentifier(this.platform, this.type, this.name);
 
   @override
   bool operator ==(Object other) {

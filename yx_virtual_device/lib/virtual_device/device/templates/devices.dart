@@ -12,18 +12,15 @@ abstract class Devices {
   static const android = AndroidDevices();
 
   /// All Custom devices.
-  static List<DeviceInfo> get custom => [
-        ...ios.all,
-        ...android.all,
-      ];
+  static List<DeviceInfo> get custom => [...ios.all, ...android.all];
 
   /// All Standard devices.
   static const standard = StandardDevices();
 
   /// All available devices.
   static List<DeviceInfo> get all => [
-        ...standard.all,
-        ...ios.all,
-        ...android.all,
-      ];
+    ...standard.all,
+    ...ios.all,
+    ...android.all,
+  ];
 }

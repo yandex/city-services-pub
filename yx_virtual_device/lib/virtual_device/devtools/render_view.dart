@@ -18,13 +18,13 @@ class VirtualRenderView extends RenderView {
     ViewConfiguration? configuration,
     required ui.FlutterView view,
   }) : super(
-          child: child,
-          // Currently on mobile devices it is initialized with null.
-          // Then, in [addRenderView], current [RenderView] get view configuration.
-          // In code below define setter to wrap configuration in a virtual container.
-          configuration: configuration,
-          view: view,
-        );
+         child: child,
+         // Currently on mobile devices it is initialized with null.
+         // Then, in [addRenderView], current [RenderView] get view configuration.
+         // In code below define setter to wrap configuration in a virtual container.
+         configuration: configuration,
+         view: view,
+       );
 
   DeviceInfo? _device;
 
@@ -111,10 +111,7 @@ class VirtualRenderView extends RenderView {
   void paint(PaintingContext context, Offset offset) {
     final device = this.device;
     if (device != null) {
-      context.canvas.drawColor(
-        _backgroundColor,
-        BlendMode.color,
-      );
+      context.canvas.drawColor(_backgroundColor, BlendMode.color);
 
       context.pushTransform(
         needsCompositing,
@@ -125,6 +122,7 @@ class VirtualRenderView extends RenderView {
           var screenPath = device.screenPath.shift(-screenBounds.topLeft);
           if (orientation == Orientation.landscape) {
             final screenTransform = Matrix4.rotationZ(pi * 0.5)
+              // ignore: deprecated_member_use
               ..translate(0.0, -screenBounds.height);
             screenPath = screenPath.transform(screenTransform.storage);
           }

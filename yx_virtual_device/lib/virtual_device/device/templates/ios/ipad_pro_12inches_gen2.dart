@@ -25,12 +25,13 @@ final info = DeviceInfo(
     bottom: 0.0,
   ),
   frameSize: const Size(1744.0, 2409.0),
-  screenPath: Path()
-    ..moveTo(1656.41, 161.872)
-    ..lineTo(93.5703, 161.872)
-    ..lineTo(93.5703, 2246.68)
-    ..lineTo(1656.41, 2246.68)
-    ..lineTo(1656.41, 161.872)
-    ..close()
-    ..fillType = PathFillType.evenOdd,
+  screenPath:
+      Path()
+        ..moveTo(1656.41, 161.872)
+        ..lineTo(93.5703, 161.872)
+        ..lineTo(93.5703, 2246.68)
+        ..lineTo(1656.41, 2246.68)
+        ..lineTo(1656.41, 161.872)
+        ..close()
+        ..fillType = PathFillType.evenOdd,
 );

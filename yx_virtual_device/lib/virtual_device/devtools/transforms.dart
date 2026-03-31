@@ -10,36 +10,35 @@ abstract class VirtualTransforms {
     DeviceInfo device,
     Orientation orientation,
   ) {
-    final outputPadding = EdgeInsets.only(
-              left: ui.window.padding.left,
-              right: ui.window.padding.right,
-              top: ui.window.padding.top,
-              bottom: ui.window.padding.bottom,
+    final view = ui.PlatformDispatcher.instance.implicitView!;
+
+    final outputPadding =
+        EdgeInsets.only(
+              left: view.padding.left,
+              right: view.padding.right,
+              top: view.padding.top,
+              bottom: view.padding.bottom,
             ) /
-            ui.window.devicePixelRatio +
+            view.devicePixelRatio +
         const EdgeInsets.all(10);
+
     final output = Size(
-      (ui.window.physicalSize.width / ui.window.devicePixelRatio) -
+      (view.physicalSize.width / view.devicePixelRatio) -
           outputPadding.horizontal,
-      (ui.window.physicalSize.height / ui.window.devicePixelRatio) -
+      (view.physicalSize.height / view.devicePixelRatio) -
           outputPadding.vertical,
     );
+
     final frameSize = device.frameSizeOn(orientation);
     final sizes = applyBoxFit(BoxFit.contain, frameSize, output);
+
     return Alignment.center.inscribe(
       sizes.destination,
-      Offset(
-            outputPadding.left,
-            outputPadding.top,
-          ) &
-          output,
+      Offset(outputPadding.left, outputPadding.top) & output,
     );
   }
 
-  static Matrix4 globalTransform(
-    DeviceInfo device,
-    Orientation orientation,
-  ) {
+  static Matrix4 globalTransform(DeviceInfo device, Orientation orientation) {
     final destinationRect = globalDestinationRect(device, orientation);
     final frameSize = device.frameSizeOn(orientation);
 
@@ -47,14 +46,12 @@ abstract class VirtualTransforms {
     final scaleY = destinationRect.height / frameSize.height;
 
     return Matrix4.translationValues(
-      destinationRect.left,
-      destinationRect.top,
-      0.0,
-    )..scale(
-        scaleX,
-        scaleY,
-        1.0,
-      );
+        destinationRect.left,
+        destinationRect.top,
+        0.0,
+      )
+      // ignore: deprecated_member_use
+      ..scale(scaleX, scaleY, 1.0);
   }
 
   static Matrix4 screenTranslateTransform(
@@ -62,48 +59,33 @@ abstract class VirtualTransforms {
     bool inverted = false,
   ]) {
     final translate = screenTranslate(device);
-    return Matrix4.translationValues(
-      translate.dx,
-      translate.dy,
-      0,
-    );
+    return Matrix4.translationValues(translate.dx, translate.dy, 0);
   }
 
   static Rect screenDestinationRect(
     DeviceInfo device,
     Orientation orientation,
   ) {
-    final destinationRect = globalDestinationRect(
-      device,
-      orientation,
-    );
+    final destinationRect = globalDestinationRect(device, orientation);
     final frameSize = device.frameSizeOn(orientation);
     final scaleX = destinationRect.width / frameSize.width;
     final scaleY = destinationRect.height / frameSize.height;
 
     var screenBounds = device.screenPath.getBounds();
     if (orientation == Orientation.landscape) {
-      screenBounds = Offset(
+      screenBounds =
+          Offset(
             device.frameSize.height - screenBounds.bottom,
             screenBounds.left,
           ) &
           screenBounds.size.flipped;
     }
     return (destinationRect.topLeft +
-            Offset(
-              screenBounds.left * scaleX,
-              screenBounds.top * scaleY,
-            )) &
-        Size(
-          screenBounds.width * scaleX,
-          screenBounds.height * scaleY,
-        );
+            Offset(screenBounds.left * scaleX, screenBounds.top * scaleY)) &
+        Size(screenBounds.width * scaleX, screenBounds.height * scaleY);
   }
 
-  static Offset screenTranslate(
-    DeviceInfo device, [
-    bool inverted = false,
-  ]) {
+  static Offset screenTranslate(DeviceInfo device, [bool inverted = false]) {
     final screenOffset = device.screenPath.getBounds().topLeft;
     return Offset(
       screenOffset.dx * (inverted ? -1 : 1),
@@ -113,6 +95,8 @@ abstract class VirtualTransforms {
 
   static Matrix4 screenScaleTransform(DeviceInfo device) {
     final scale = device.screenPath.getBounds().width / device.screenSize.width;
+
+    // ignore: deprecated_member_use
     return Matrix4.identity()..scale(scale);
   }
 }

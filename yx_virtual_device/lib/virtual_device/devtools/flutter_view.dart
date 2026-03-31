@@ -14,9 +14,9 @@ class VirtualFlutterView implements FlutterView {
     required FlutterView view,
     required VirtualPlatformDispatcher platformDispatcher,
     required VirtualDisplay display,
-  })  : parent = view,
-        _platformDispatcher = platformDispatcher,
-        _display = display;
+  }) : parent = view,
+       _platformDispatcher = platformDispatcher,
+       _display = display;
 
   /// Real [FlutterView].
   final FlutterView parent;

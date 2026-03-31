@@ -4,11 +4,9 @@ import 'platform_dispatcher.dart';
 
 /// A configurable display that a [FlutterView] renders on.
 class VirtualDisplay implements Display {
-  VirtualDisplay(
-    VirtualPlatformDispatcher platformDispatcher,
-    Display display,
-  )   : _platformDispatcher = platformDispatcher,
-        _display = display;
+  VirtualDisplay(VirtualPlatformDispatcher platformDispatcher, Display display)
+    : _platformDispatcher = platformDispatcher,
+      _display = display;
 
   final Display _display;
   final VirtualPlatformDispatcher _platformDispatcher;

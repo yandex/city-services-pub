@@ -19,10 +19,10 @@ class AndroidDevices {
 
   /// All available devices.
   List<DeviceInfo> get all => [
-        //Phones
-        samsungGalaxyA50,
-        samsungGalaxyS20,
-        samsungGalaxyNote20Ultra,
-        onePlus8Pro,
-      ];
+    //Phones
+    samsungGalaxyA50,
+    samsungGalaxyS20,
+    samsungGalaxyNote20Ultra,
+    onePlus8Pro,
+  ];
 }

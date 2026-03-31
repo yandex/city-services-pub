@@ -1,6 +1,6 @@
 name: yx_virtual_device
 description: A Flutter package that lets you simulate various device screens directly inside your running app. Easily test your responsive UI on the fly without the need for physical devices or constantly switching emulators.
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/yandex/city-services-pub/tree/main/yx_virtual_device
 issue_tracker: https://github.com/yandex/city-services-pub/issues
 topics:

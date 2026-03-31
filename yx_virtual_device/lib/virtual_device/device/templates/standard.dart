@@ -407,26 +407,26 @@ class StandardDevices {
 
   /// All available devices.
   List<DeviceInfo> get all => [
-        //Phones
-        w180,
-        w240,
-        w280,
-        w320,
-        w360p2,
-        w360p3,
-        w375,
-        w390,
-        w400,
-        w414,
-        w428,
-        w480,
-        w533,
-        w540,
-        w600p1,
-        // Tablets
-        w600p2,
-        w720,
-        w800,
-        w1080,
-      ];
+    //Phones
+    w180,
+    w240,
+    w280,
+    w320,
+    w360p2,
+    w360p3,
+    w375,
+    w390,
+    w400,
+    w414,
+    w428,
+    w480,
+    w533,
+    w540,
+    w600p1,
+    // Tablets
+    w600p2,
+    w720,
+    w800,
+    w1080,
+  ];
 }

@@ -33,9 +33,10 @@ abstract class VirtualDeviceDevtools {
     if (available) {
       final binding = VirtualWidgetsFlutterBinding.virtualBinding;
       final orientation = binding.orientation;
-      binding.orientation = (orientation == Orientation.portrait
-          ? Orientation.landscape
-          : Orientation.portrait);
+      binding.orientation =
+          (orientation == Orientation.portrait
+              ? Orientation.landscape
+              : Orientation.portrait);
     }
   }
 

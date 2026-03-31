@@ -70,28 +70,20 @@ class DeviceInfo {
     EdgeInsets safeAreas = EdgeInsets.zero,
     EdgeInsets rotatedSafeAreas = EdgeInsets.zero,
     double pixelRatio = 2.0,
-  }) =>
-      DeviceInfo(
-        identifier: DeviceIdentifier(
-          platform,
-          DeviceType.phone,
-          id,
-        ),
-        name: name,
-        screenSize: screenSize,
-        safeAreas: safeAreas,
-        rotatedSafeAreas: rotatedSafeAreas,
-        pixelRatio: pixelRatio,
-        frameSize: calculatePhoneFrameSize(screenSize),
-        screenPath: createPhoneScreenPath(screenSize),
-      );
+  }) => DeviceInfo(
+    identifier: DeviceIdentifier(platform, DeviceType.phone, id),
+    name: name,
+    screenSize: screenSize,
+    safeAreas: safeAreas,
+    rotatedSafeAreas: rotatedSafeAreas,
+    pixelRatio: pixelRatio,
+    frameSize: calculatePhoneFrameSize(screenSize),
+    screenPath: createPhoneScreenPath(screenSize),
+  );
 
   /// Helper to calculate generic phone frame size.
   static Size calculatePhoneFrameSize(Size screenSize) {
-    return Size(
-      screenSize.width,
-      screenSize.height,
-    );
+    return Size(screenSize.width, screenSize.height);
   }
 
   /// Helper to create generic phone screen path.
@@ -111,28 +103,20 @@ class DeviceInfo {
     EdgeInsets safeAreas = EdgeInsets.zero,
     EdgeInsets rotatedSafeAreas = EdgeInsets.zero,
     double pixelRatio = 2.0,
-  }) =>
-      DeviceInfo(
-        identifier: DeviceIdentifier(
-          platform,
-          DeviceType.tablet,
-          id,
-        ),
-        name: name,
-        screenSize: screenSize,
-        safeAreas: safeAreas,
-        rotatedSafeAreas: rotatedSafeAreas,
-        pixelRatio: pixelRatio,
-        frameSize: calculateTabletFrameSize(screenSize),
-        screenPath: createTabletScreenPath(screenSize),
-      );
+  }) => DeviceInfo(
+    identifier: DeviceIdentifier(platform, DeviceType.tablet, id),
+    name: name,
+    screenSize: screenSize,
+    safeAreas: safeAreas,
+    rotatedSafeAreas: rotatedSafeAreas,
+    pixelRatio: pixelRatio,
+    frameSize: calculateTabletFrameSize(screenSize),
+    screenPath: createTabletScreenPath(screenSize),
+  );
 
   /// Helper to calculate generic tablet frame size.
   static Size calculateTabletFrameSize(Size screenSize) {
-    return Size(
-      screenSize.width,
-      screenSize.height,
-    );
+    return Size(screenSize.width, screenSize.height);
   }
 
   /// Helper to create generic tablet screen path.

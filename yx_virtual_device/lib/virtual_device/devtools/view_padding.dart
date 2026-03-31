@@ -15,9 +15,7 @@ class VirtualViewPadding implements ViewPadding {
     required this.bottom,
   });
 
-  factory VirtualViewPadding.fromEdgeInsets(
-    EdgeInsets insets,
-  ) =>
+  factory VirtualViewPadding.fromEdgeInsets(EdgeInsets insets) =>
       VirtualViewPadding(
         left: insets.left,
         top: insets.top,
@@ -26,10 +24,10 @@ class VirtualViewPadding implements ViewPadding {
       );
 
   const VirtualViewPadding.all(double value)
-      : left = value,
-        right = value,
-        top = value,
-        bottom = value;
+    : left = value,
+      right = value,
+      top = value,
+      bottom = value;
 
   @override
   final double left;
@@ -43,12 +41,8 @@ class VirtualViewPadding implements ViewPadding {
   @override
   final double bottom;
 
-  EdgeInsets asEdgeInsets() => EdgeInsets.only(
-        left: left,
-        right: right,
-        top: top,
-        bottom: bottom,
-      );
+  EdgeInsets asEdgeInsets() =>
+      EdgeInsets.only(left: left, right: right, top: top, bottom: bottom);
 
   @override
   String toString() {

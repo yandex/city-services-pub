@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:isolate';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -18,9 +20,8 @@ import 'flutter_view.dart';
 /// It manages the list of the application's [views] as well as the
 /// [configuration] of various platform attributes.
 class VirtualPlatformDispatcher implements PlatformDispatcher {
-  VirtualPlatformDispatcher({
-    required PlatformDispatcher platformDispatcher,
-  }) : parent = platformDispatcher {
+  VirtualPlatformDispatcher({required PlatformDispatcher platformDispatcher})
+    : parent = platformDispatcher {
     _updateViewsAndDisplays();
     parent.onMetricsChanged = _handleMetricsChanged;
     parent.onViewFocusChange = _handleViewFocusChanged;
@@ -386,7 +387,8 @@ class VirtualPlatformDispatcher implements PlatformDispatcher {
 
   @override
   set onPlatformConfigurationChanged(
-      VoidCallback? onPlatformConfigurationChanged) {
+    VoidCallback? onPlatformConfigurationChanged,
+  ) {
     parent.onPlatformConfigurationChanged = onPlatformConfigurationChanged;
   }
 
@@ -538,10 +540,7 @@ class VirtualPlatformDispatcher implements PlatformDispatcher {
     required VoidCallback beginFrame,
     required VoidCallback drawFrame,
   }) {
-    parent.scheduleWarmUpFrame(
-      beginFrame: beginFrame,
-      drawFrame: drawFrame,
-    );
+    parent.scheduleWarmUpFrame(beginFrame: beginFrame, drawFrame: drawFrame);
   }
 
   @override
@@ -553,13 +552,36 @@ class VirtualPlatformDispatcher implements PlatformDispatcher {
   ) {
     // Fix for Flutter Web.
     final sendPort = port as SendPort;
-    parent.sendPortPlatformMessage(
-      name,
-      data,
-      identifier,
-      sendPort,
-    );
+    parent.sendPortPlatformMessage(name, data, identifier, sendPort);
   }
+
+  // ToDo: remove hack when minSdk 3.35
+  int? get engineId => (parent as dynamic).engineId;
+
+  // ToDo: remove hack when minSdk 3.35
+  void setApplicationLocale(Locale locale) {
+    (parent as dynamic).setApplicationLocale(locale);
+  }
+
+  // ToDo: remove hack when minSdk 3.41
+  void setSemanticsTreeEnabled(bool enabled) {
+    (parent as dynamic).setSemanticsTreeEnabled(enabled);
+  }
+
+  // ToDo: remove hack when minSdk 3.41
+  double? get letterSpacingOverride =>
+      (parent as dynamic).letterSpacingOverride;
+
+  // ToDo: remove hack when minSdk 3.41
+  double? get lineHeightScaleFactorOverride =>
+      (parent as dynamic).lineHeightScaleFactorOverride;
+
+  // ToDo: remove hack when minSdk 3.41
+  double? get paragraphSpacingOverride =>
+      (parent as dynamic).paragraphSpacingOverride;
+
+  // ToDo: remove hack when minSdk 3.41
+  double? get wordSpacingOverride => (parent as dynamic).wordSpacingOverride;
 }
 
 class _UnsupportedDisplay implements VirtualDisplay {
