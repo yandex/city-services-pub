@@ -1,1 +1,0 @@
-SUBSCRIBER(man-y)
