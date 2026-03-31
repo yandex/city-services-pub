@@ -1,0 +1,4 @@
+linter:
+  rules:
+    always_put_required_named_parameters_first: false # https://dart-lang.github.io/linter/lints/always_put_required_named_parameters_first.html
+    prefer_constructors_over_static_methods: false # https://dart-lang.github.io/linter/lints/prefer_constructors_over_static_methods.html
