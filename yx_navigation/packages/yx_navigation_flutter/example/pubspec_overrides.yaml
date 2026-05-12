@@ -1,0 +1,5 @@
+dependency_overrides:
+  yx_navigation:
+    path: ../../yx_navigation
+  yx_navigation_flutter:
+    path: ../../yx_navigation_flutter

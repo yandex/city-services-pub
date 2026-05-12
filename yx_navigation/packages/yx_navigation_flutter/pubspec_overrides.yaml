@@ -1,0 +1,3 @@
+dependency_overrides:
+  yx_navigation:
+    path: ../yx_navigation

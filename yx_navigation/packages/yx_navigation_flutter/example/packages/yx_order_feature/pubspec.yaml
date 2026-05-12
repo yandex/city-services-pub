@@ -1,0 +1,23 @@
+name: yx_order_feature
+description: Example feature module used by the yx_navigation_flutter example app.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.32.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  yx_navigation: ^1.0.0
+  yx_navigation_flutter: ^1.0.0
+  meta: ^1.8.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

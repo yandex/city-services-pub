@@ -1,0 +1,5 @@
+dartdoc:
+  linkToSource:
+    root: '.'
+    uriTemplate: 'https://github.com/yandex/city-services-pub/blob/main/yx_navigation/packages/yx_navigation/%f%#L%l%'
+  showUndocumentedCategories: false
