@@ -168,6 +168,29 @@ abstract class BaseScopeContainer extends Scope {
         observer: _asyncDepObserver,
       );
 
+  /// Declares an [AsyncDep] whose value must be created asynchronously
+  /// during [initializeQueue] processing and then can be accessed
+  /// synchronously via [AsyncDep.get].
+  @nonVirtual
+  @protected
+  AsyncDep<Value> asyncDepWithCreator<Value>(
+    Future<Value> Function() create, {
+    required AsyncDepCallback<Value> dispose,
+    AsyncDepCallback<Value>? init,
+    String? name,
+  }) =>
+      AsyncDep._(
+        this,
+        () => throw ScopeException(
+          'Dependency $Value must be initialized in queue before accessing it via .get',
+        ),
+        CoreAsyncDepBehavior<Value, AsyncDep<Value>>(asyncBuilder: create),
+        init: init ?? (_) async {},
+        dispose: dispose,
+        name: name,
+        observer: _asyncDepObserver,
+      );
+
   void _registerDep(Dep dep) => _container.add(dep);
 
   void _unregister() {

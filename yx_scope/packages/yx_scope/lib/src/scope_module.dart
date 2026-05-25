@@ -57,4 +57,18 @@ abstract class ScopeModule<Container extends BaseScopeContainer> {
         dispose: dispose,
         name: name,
       );
+
+  @protected
+  AsyncDep<Value> asyncDepWithCreator<Value>(
+    Future<Value> Function() create, {
+    required AsyncDepCallback<Value> dispose,
+    AsyncDepCallback<Value>? init,
+    String? name,
+  }) =>
+      container.asyncDepWithCreator(
+        create,
+        dispose: dispose,
+        init: init,
+        name: name,
+      );
 }
