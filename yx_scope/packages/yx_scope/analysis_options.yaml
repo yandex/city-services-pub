@@ -3,3 +3,7 @@ include: package:lints/recommended.yaml
 linter:
   rules:
     avoid_types_as_parameter_names: false
+    # Runtime type names are minified in release builds, so runtimeType in
+    # toString() produces useless diagnostics in prod. Use objectRuntimeType
+    # (see lib/src/core/object_runtime_type.dart) instead.
+    no_runtimeType_toString: true

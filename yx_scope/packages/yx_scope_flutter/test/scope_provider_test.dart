@@ -80,10 +80,11 @@ void main() {
         const MyAppNoProvider(home: ScopeWidget<TestScopeContainer>()));
     final dynamic exception = tester.takeException();
     const expectedMessage = '''
-        ScopeProvider.of() called with a context that does not contain a TestScopeContainer.
+        ScopeProvider.of<TestScopeContainer>() called with a context that does not contain a TestScopeContainer.
         No ancestor could be found starting from the context that was passed to ScopeProvider.of<TestScopeContainer>().
 
-        This can happen if the context you used comes from a widget above the ScopeProvider.
+        This can happen if the context you used comes from a widget above the ScopeProvider<TestScopeContainer>,
+        or if ScopeProvider<TestScopeContainer> was never added to the widget tree.
 
         The context used was: ScopeWidget<TestScopeContainer>(dirty)
 ''';
@@ -143,10 +144,11 @@ void main() {
     ));
     final dynamic exception = tester.takeException();
     const expectedMessage = '''
-        ScopeProvider.of() called with a context that does not contain a SomeScope.
+        ScopeProvider.of<SomeScope>() called with a context that does not contain a SomeScope.
         No ancestor could be found starting from the context that was passed to ScopeProvider.of<SomeScope>().
 
-        This can happen if the context you used comes from a widget above the ScopeProvider.
+        This can happen if the context you used comes from a widget above the ScopeProvider<SomeScope>,
+        or if ScopeProvider<SomeScope> was never added to the widget tree.
 
         The context used was: ScopeWidget<SomeScope>(dirty)
 ''';
@@ -162,10 +164,11 @@ void main() {
     ));
     final dynamic exception = tester.takeException();
     const expectedMessage = '''
-        ScopeProvider.of() called with a context that does not contain a SomeScopeContainer.
+        ScopeProvider.of<SomeScopeContainer>() called with a context that does not contain a SomeScopeContainer.
         No ancestor could be found starting from the context that was passed to ScopeProvider.of<SomeScopeContainer>().
 
-        This can happen if the context you used comes from a widget above the ScopeProvider.
+        This can happen if the context you used comes from a widget above the ScopeProvider<SomeScopeContainer>,
+        or if ScopeProvider<SomeScopeContainer> was never added to the widget tree.
 
         The context used was: ScopeWidget<SomeScopeContainer>(dirty)
 ''';

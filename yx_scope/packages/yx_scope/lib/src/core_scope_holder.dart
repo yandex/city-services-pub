@@ -373,6 +373,15 @@ abstract class CoreScopeHolder<Scope, Container extends BaseScopeContainer>
 
   void _disposing() => _updateScope(ScopeState.disposing());
 
+  @override
+  String toString() {
+    final scope = this.scope;
+    final name = scope is BaseScopeContainer
+        ? scope.debugName
+        : objectRuntimeType(this, 'ScopeStateHolder');
+    return '$name(state: $_state)';
+  }
+
   void _prepareObservers(Container scope) {
     scope._depObserver._observers = _depObservers;
     scope._asyncDepObserver._observers = _asyncDepObservers;

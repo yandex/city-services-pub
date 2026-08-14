@@ -16,6 +16,8 @@ import 'scope_container.dart';
 import 'scope_holder_behavior.dart';
 import 'scope_state_streamable.dart';
 
+part 'core/object_runtime_type.dart';
+
 part 'core/scope_state_holder.dart';
 
 part 'core_scope_holder.dart';
@@ -83,6 +85,16 @@ abstract class BaseScopeContainer extends Scope {
     _depObserver = DepObserverInternal(this);
     _asyncDepObserver = AsyncDepObserverInternal(this);
   }
+
+  /// Human-readable name of this container, safe to use in logs and
+  /// diagnostics — including release/obfuscated builds.
+  ///
+  /// Returns the explicit [name] passed to the constructor if provided;
+  /// otherwise falls back to the runtime type. Because `runtimeType` is
+  /// minified in release builds (e.g. it becomes `minified:H<dynamic>`), pass
+  /// an explicit [name] to keep this readable in production non-fatals — see
+  /// [objectRuntimeType].
+  String get debugName => _name ?? objectRuntimeType(this, 'ScopeContainer');
 
   /// A queue of the initialization for [AsyncDep].
   /// The order of the execution is the following:

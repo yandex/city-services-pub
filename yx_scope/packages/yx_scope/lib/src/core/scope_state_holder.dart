@@ -139,6 +139,10 @@ class ScopeStateHolder<Scope> {
     }(), '');
     return true;
   }
+
+  @override
+  String toString() =>
+      '${objectRuntimeType(this, 'ScopeStateHolder')}(state: $_state)';
 }
 
 @visibleForTesting

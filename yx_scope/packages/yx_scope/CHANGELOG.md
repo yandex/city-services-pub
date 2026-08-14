@@ -1,5 +1,6 @@
 **1.2.1 - unpublished**
 * Added ScopeHolderBehavior
+* Added release-safe scope diagnostics and the `no_runtimeType_toString` lint
 
 ## 1.2.0 - 2025.12.18
 

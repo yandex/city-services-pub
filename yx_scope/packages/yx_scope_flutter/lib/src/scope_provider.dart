@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:yx_scope/yx_scope.dart';
 
@@ -37,10 +38,11 @@ class ScopeProvider<T> extends StatelessWidget {
       return Provider.of<T?>(context, listen: listen);
     } on NotFoundProviderException catch (_) {
       throw FlutterScopeError('''
-        ScopeProvider.of() called with a context that does not contain a $T.
+        ScopeProvider.of<$T>() called with a context that does not contain a $T.
         No ancestor could be found starting from the context that was passed to ScopeProvider.of<$T>().
 
-        This can happen if the context you used comes from a widget above the ScopeProvider.
+        This can happen if the context you used comes from a widget above the ScopeProvider<$T>,
+        or if ScopeProvider<$T> was never added to the widget tree.
 
         The context used was: $context
         ''');
@@ -65,14 +67,22 @@ class ScopeProvider<T> extends StatelessWidget {
       return Provider.of<ScopeStateHolder<T?>>(context, listen: listen);
     } on NotFoundProviderException catch (_) {
       throw FlutterScopeError('''
-        ScopeProvider.scopeHolderOf() called with a context that does not contain a $T.
+        ScopeProvider.scopeHolderOf<$T>() called with a context that does not contain a ScopeProvider<$T>.
         No ancestor could be found starting from the context that was passed to ScopeProvider.scopeHolderOf<$T>().
 
-        This can happen if the context you used comes from a widget above the ScopeProvider.
+        This can happen if the context you used comes from a widget above the ScopeProvider<$T>,
+        or if ScopeProvider<$T> was never added to the widget tree.
 
         The context used was: $context
         ''');
     }
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<ScopeStateHolder<T?>>('holder', holder));
+    properties.add(DiagnosticsProperty<Type>('scopeType', T));
   }
 
   @override

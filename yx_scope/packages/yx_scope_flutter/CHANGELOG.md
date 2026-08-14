@@ -1,3 +1,8 @@
+**1.2.1 - unpublished**
+
+* Improved error messages in `ScopeProvider.of<T>()` and `ScopeProvider.scopeHolderOf<T>()` — the scope type `T` is now included in the error summary line for easier identification in crash reports, and both messages now consistently mention that the `ScopeProvider<T>` may never have been added to the widget tree
+* Added `debugFillProperties` to `ScopeProvider` — Flutter's widget inspector and error context dumps now include the holder's runtime type and scope type
+
 ## 1.2.0 - 2025.12.18
 
 * Updated yx_scope dependency to 1.2.0
