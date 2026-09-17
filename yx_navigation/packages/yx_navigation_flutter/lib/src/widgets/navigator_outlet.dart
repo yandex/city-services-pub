@@ -200,6 +200,7 @@ class _NavigatorOutletState extends State<NavigatorOutlet> {
                       key: _navigatorKey,
                       navigationController: _resolvedNavigationController,
                       popCompleterProvider: () => _popCompleter,
+                      hasPendingMutations: _arePagesStale,
                       pages: pages,
                       onDidRemovePage: _onDidRemovePage,
                       restorationScopeId: widget.restorationScopeId,
@@ -243,6 +244,45 @@ class _NavigatorOutletState extends State<NavigatorOutlet> {
       stateManager: _stateManager,
       nodeResolver: _routeNodeResolver,
     );
+  }
+
+  /// Whether the pages handed to the [Navigator] still match the children of
+  /// the current tree.
+  ///
+  /// Tree mutations are synchronous, but `Navigator.pages` is rebuilt only on
+  /// the next frame, so the two disagree for the rest of the frame after any
+  /// mutation. An imperative route added inside that window attaches to a page
+  /// the tree has already dropped, and Flutter removes pageless routes
+  /// together with the page they are tied to - see the assert in [YxNavigator],
+  /// and `docs/compatibility_architecture.md`, section
+  /// "Pushing right after a tree mutation", for the full explanation.
+  ///
+  /// Compares by route and arguments only: a mutation deeper in the subtree is
+  /// handled by the nested outlet that owns it.
+  bool _arePagesStale() {
+    final children = _resolvedNavigationController.state?.children;
+    if (children == null) {
+      return false;
+    }
+    if (children.length != _pageEntries.length) {
+      return true;
+    }
+
+    const equality = RouteNodeEquality.routeAndArguments();
+    var index = 0;
+    for (final child in children) {
+      final pageEntryNode = _pageEntries[index].routeNode;
+      final isSame = child.equalsBy(
+        pageEntryNode,
+        equality: equality,
+      );
+      if (!isSame) {
+        return true;
+      }
+      index++;
+    }
+
+    return false;
   }
 
   void _onDidRemovePage(Page<Object?> page) {

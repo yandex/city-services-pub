@@ -73,6 +73,10 @@ Most basic Navigator 1.0 operations **work correctly** with yx_navigation withou
 They work because they **do not rewrite the existing route stack** - they only append or remove the
 top entry.
 
+⚠️ **With one ordering condition:** a `push` must not follow a tree mutation within the same frame.
+See [Pushing right after a tree mutation](#pushing-right-after-a-tree-mutation) below - that sequence
+requires Compatibility as well.
+
 ### Which operations fail without Compatibility?
 
 ❌ **Unsupported (assert):**
@@ -82,6 +86,64 @@ top entry.
 - `Navigator.of(context).removeRoute(Route)` - remove a specific mid-stack route
 - `Navigator.of(context).replace(oldRoute, newRoute)` - replace a specific route
 - `Navigator.of(context).replaceRouteBelow(anchorRoute, newRoute)` - replace below anchor
+- `Navigator.of(context).push(Route)` **when a tree mutation from the same frame has not reached
+  `Navigator.pages` yet** - see below
+
+### Pushing right after a tree mutation
+
+A route added through the Navigator 1.0 API is **pageless**, and Flutter ties a pageless route to the
+page directly below it. From the `Navigator.pages` doc comment:
+
+> A `Route` that does not correspond to a `Page` object is called a pageless route and is tied to the
+> `Route` that _does_ correspond to a `Page` object that is below it in the history. <...> If a page
+> is removed that had other pageless routes pushed on top of it using `push` and friends, those
+> pageless routes are also removed.
+
+Now recall how state reaches the screen in yx_navigation. Tree mutations are **synchronous** -
+`mutate` runs the guards and writes the new state immediately. Delivery to the UI is **not**: the
+state manager publishes through a broadcast stream (a microtask), `YxRouterDelegate` then calls
+`notifyListeners`, and `Navigator.pages` is rebuilt only on the **next frame**.
+
+So for the rest of the current frame the tree and the pages disagree:
+
+```
+controller.pop()                     tree:  [ home ]              <- already updated
+                                     pages: [ home, orderCard ]   <- still the old list
+
+navigatorKey.currentState.push(...)  the new pageless route attaches to `orderCard`,
+                                     the page the tree has already dropped
+
+next frame                           `orderCard` leaves `pages` and takes the
+                                     pageless route with it
+```
+
+The imperative route is gone, and nothing in the declarative state shows that it ever existed.
+
+**This is Flutter SDK behaviour, not a yx_navigation defect.** Any page-based `Navigator` does the
+same - remove a page from `pages` and push an imperative route before the rebuild lands, and the
+route leaves together with that page:
+
+```dart
+// No yx_navigation involved at all.
+setState(() => pages = pages.sublist(0, pages.length - 1));
+navigatorKey.currentState!.push(MaterialPageRoute(builder: ...));
+// after the next frame: the removed page is gone - and so is the pushed route
+```
+
+What yx_navigation adds is only the *timing*: tree mutations land immediately while `pages` catch up
+a frame later, so the window in which this happens is easy to step into - a `pop` followed by an
+imperative `push` in the same block is enough.
+
+This is the same boundary as the replace operations above: a Navigator 1.0 route cannot take part in
+a page-based stack rewrite. `YxNavigator` raises an assert in debug builds when it detects the
+mismatch, so the boundary is not silent.
+
+**What to do instead:**
+
+- install `NavigatorCompatibilityOverrides` - the route is then wrapped in a `Page`, joins the route
+  tree, and is no longer tied to the outgoing page; or
+- issue the imperative call after the pending mutation has been applied (for example from a
+  post-frame callback) rather than in the same synchronous block.
 
 ### Why do these fail without Compatibility?
 

@@ -10,6 +10,14 @@ import 'navigator_overrides.dart';
 
 typedef PopCompleterProvider = Completer<void>? Function();
 
+/// Reports whether the pages handed to the [Navigator] still match the current
+/// route tree.
+///
+/// Tree mutations are synchronous while `Navigator.pages` is rebuilt on the
+/// next frame, so the two disagree for the rest of the current frame after any
+/// mutation.
+typedef PendingMutationProbe = bool Function();
+
 /// {@template yx_navigator}
 /// YxNavigator widget.
 /// {@endtemplate}
@@ -22,6 +30,8 @@ class YxNavigator extends Navigator {
 
   final PopCompleterProvider _popCompleterProvider;
 
+  final PendingMutationProbe _hasPendingMutations;
+
   /// Creates an [YxNavigator] widget.
   ///
   /// {@macro yx_navigator}
@@ -31,6 +41,7 @@ class YxNavigator extends Navigator {
     required super.onDidRemovePage,
     required NavigationController navigationController,
     required PopCompleterProvider popCompleterProvider,
+    required PendingMutationProbe hasPendingMutations,
     NavigatorOverrides? overrides,
     super.reportsRouteUpdateToEngine = false,
     super.clipBehavior = Clip.hardEdge,
@@ -43,6 +54,7 @@ class YxNavigator extends Navigator {
   })  : _overrides = overrides,
         _navigationController = navigationController,
         _popCompleterProvider = popCompleterProvider,
+        _hasPendingMutations = hasPendingMutations,
         super(
           transitionDelegate: transitionDelegate ??
               NavigationDefaults.defaultsTransitionDelegate,
@@ -108,9 +120,38 @@ class _YxNavigatorNavigatorState extends NavigatorState {
           return super.push(route);
         }
       }
+
+      _assertNoPendingMutations(widget, 'push');
     }
 
     return super.push(route);
+  }
+
+  /// Rejects an imperative route added on top of pages that no longer match
+  /// the tree.
+  ///
+  /// Without compatibility overrides the route stays pageless, and Flutter
+  /// ties a pageless route to the page below it, removing them together. A
+  /// route added while the tree has already dropped that page is therefore
+  /// dropped with it, and nothing in the declarative state records that it
+  /// ever existed.
+  ///
+  /// Crossing that boundary is what the compatibility layer is for - the same
+  /// boundary Flutter itself guards for replace operations.
+  void _assertNoPendingMutations(YxNavigator widget, String operation) {
+    assert(
+      !widget._hasPendingMutations(),
+      'Navigator.$operation was called while a route tree mutation has not '
+      'reached Navigator.pages yet (they are rebuilt on the next frame).\n'
+      '\n'
+      'Without NavigatorCompatibilityOverrides the route stays pageless, and '
+      'Flutter removes pageless routes together with the page they are tied '
+      'to - so this route will be dropped with the outgoing page.\n'
+      '\n'
+      'Either install NavigatorCompatibilityOverrides through '
+      'NavigationConfigProvider, or issue the imperative call after the '
+      'pending mutation has been applied.',
+    );
   }
 
   @override
@@ -154,6 +195,11 @@ class _YxNavigatorNavigatorState extends NavigatorState {
           );
         }
       }
+
+      // Reachable when the route on top is itself pageless: Flutter only
+      // asserts on replacing a *page-based* route, so the operation goes
+      // through and hits the same race as push.
+      _assertNoPendingMutations(widget, 'pushAndRemoveUntil');
     }
     return super.pushAndRemoveUntil(newRoute, predicate);
   }
@@ -162,7 +208,7 @@ class _YxNavigatorNavigatorState extends NavigatorState {
   Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
     Route<T> newRoute, {
     TO? result,
-  }) {
+  }) async {
     final widget = this.widget;
 
     if (widget is YxNavigator) {
@@ -199,6 +245,10 @@ class _YxNavigatorNavigatorState extends NavigatorState {
           );
         }
       }
+
+      // Reachable when the route on top is itself pageless - see the note in
+      // pushAndRemoveUntil.
+      _assertNoPendingMutations(widget, 'pushReplacement');
     }
 
     return super.pushReplacement(newRoute, result: result);

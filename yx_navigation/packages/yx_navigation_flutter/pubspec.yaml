@@ -1,6 +1,6 @@
 name: yx_navigation_flutter
-description: Flutter integration for yx_navigation — schemas, Router / Navigator 2.0, outlets, and compatibility layer.
-version: 1.0.0
+description: Flutter integration for yx_navigation - schemas, Router / Navigator 2.0, outlets, and compatibility layer.
+version: 1.1.0
 repository: https://github.com/yandex/city-services-pub/tree/main/yx_navigation/packages/yx_navigation_flutter
 issue_tracker: https://github.com/yandex/city-services-pub/issues
 topics:
