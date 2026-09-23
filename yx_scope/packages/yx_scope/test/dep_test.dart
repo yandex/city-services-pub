@@ -13,6 +13,7 @@ void main() {
     _TestDep.instances.clear();
     _TestAsyncDepNoAsyncLifecycle.instances.clear();
     _TestAsyncDep.instances.clear();
+    _TestCreatedAsyncDep.instances.clear();
     ScopeObservatory.logger = const TestLogger();
 
     RawScopeObserver.override = observer;
@@ -168,6 +169,29 @@ void main() {
 
       await scopeHolder.drop();
     });
+
+    test('async dep with creator is created during initialization and cached',
+        () async {
+      final scopeHolder = _TestCreatedAsyncDepScopeHolder();
+
+      await scopeHolder.create();
+      final scope = scopeHolder.scope;
+      if (scope == null) {
+        throw Exception('Scope must be non-null here');
+      }
+
+      expect(_TestCreatedAsyncDep.instances.length, 1);
+
+      final depValue = scope.createdAsyncDep.get;
+      expect(depValue, same(_TestCreatedAsyncDep.instances.first));
+      expect(depValue.initialized, isTrue);
+      expect(scope.createdAsyncDep.get, same(depValue));
+
+      await scopeHolder.drop();
+
+      expect(depValue.initialized, isFalse);
+      expect(depValue.disposed, isTrue);
+    });
   });
 }
 
@@ -252,6 +276,44 @@ class _TestAsyncDepScope extends ScopeContainer {
 class _TestAsyncDepScopeHolder extends ScopeHolder<_TestAsyncDepScope> {
   @override
   _TestAsyncDepScope createContainer() => _TestAsyncDepScope();
+}
+
+class _TestCreatedAsyncDep {
+  static final instances = <_TestCreatedAsyncDep>[];
+
+  _TestCreatedAsyncDep() {
+    instances.add(this);
+  }
+
+  var initialized = false;
+  var disposed = false;
+}
+
+class _TestCreatedAsyncDepScope extends ScopeContainer {
+  @override
+  List<Set<AsyncDep>> get initializeQueue => [
+        {createdAsyncDep}
+      ];
+
+  late final createdAsyncDep = asyncDepWithCreator<_TestCreatedAsyncDep>(
+    () async {
+      await Future.delayed(const Duration(milliseconds: 1));
+      return _TestCreatedAsyncDep();
+    },
+    init: (dep) async {
+      dep.initialized = true;
+    },
+    dispose: (dep) async {
+      dep.initialized = false;
+      dep.disposed = true;
+    },
+  );
+}
+
+class _TestCreatedAsyncDepScopeHolder
+    extends ScopeHolder<_TestCreatedAsyncDepScope> {
+  @override
+  _TestCreatedAsyncDepScope createContainer() => _TestCreatedAsyncDepScope();
 }
 
 class _TestObserver implements RawScopeObserver, RawAsyncDepObserver {
