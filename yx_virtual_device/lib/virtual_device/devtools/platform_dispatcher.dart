@@ -582,6 +582,14 @@ class VirtualPlatformDispatcher implements PlatformDispatcher {
 
   // ToDo: remove hack when minSdk 3.41
   double? get wordSpacingOverride => (parent as dynamic).wordSpacingOverride;
+
+  // ToDo: remove hack when minSdk 3.47
+  get onHitTest => (parent as dynamic).onHitTest;
+
+  // ToDo: remove hack when minSdk 3.47
+  set onHitTest(dynamic callback) {
+    (parent as dynamic).onHitTest = callback;
+  }
 }
 
 class _UnsupportedDisplay implements VirtualDisplay {

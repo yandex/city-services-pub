@@ -206,4 +206,7 @@ class VirtualFlutterView implements FlutterView {
     resetViewPadding(notify);
     resetGestureSettings(notify);
   }
+
+  // ToDo: remove hack when minSdk 3.44
+  get displayCornerRadii => (parent as dynamic).displayCornerRadii;
 }

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://github.com/yandex/city-services-pub/blob/main/yx_virtual_device/screenshots/Logo.webp?raw=true" width="200" alt="The yx_virtual_device package logo" />
+<img src="screenshots/Logo.webp" width="200" alt="The yx_virtual_device package logo" />
 
 **A utility for testing the user interface for Flutter applications.**
 
@@ -15,7 +15,7 @@ A Flutter package for simulating different device screens during development. Te
 
 It is important not to use it for release builds!!!
 
-![Example](https://github.com/yandex/city-services-pub/blob/main/yx_virtual_device/screenshots/Example.gif)
+![Example](screenshots/Example.gif)
 
 ## Features
 
@@ -26,7 +26,7 @@ It is important not to use it for release builds!!!
 
 ## Screenshots
 
-![Phone](https://github.com/yandex/city-services-pub/blob/main/yx_virtual_device/screenshots/Phone.webp) ![Tablet](https://github.com/yandex/city-services-pub/blob/main/yx_virtual_device/screenshots/Tablet.webp)
+![Phone](screenshots/Phone.webp) ![Tablet](screenshots/Tablet.webp)
 
 ## Installation
 
@@ -67,7 +67,7 @@ VirtualDeviceDevtools.setDevice(null);
 
 ### Standard Devices
 
-![Standard group](https://github.com/yandex/city-services-pub/blob/main/yx_virtual_device/screenshots/Standard.webp)
+![Standard group](screenshots/Standard.webp)
 
 ```dart
 Devices.standard.w360p3   // 360×800 @3x

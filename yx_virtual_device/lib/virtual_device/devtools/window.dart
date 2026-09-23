@@ -76,6 +76,9 @@ class VirtualWindow implements SingletonFlutterWindow {
   @override
   List<DisplayFeature> get displayFeatures => _view.displayFeatures;
 
+  // ToDo: remove hack when minSdk 3.44
+  get displayCornerRadii => _view.displayCornerRadii;
+
   @Deprecated(
     'Deprecated to prepare for the upcoming multi-window support. '
     'This feature was deprecated after v3.9.0-0.1.pre.',

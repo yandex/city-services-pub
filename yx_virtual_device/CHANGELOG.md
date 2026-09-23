@@ -1,3 +1,6 @@
+## [1.1.0] - 22.09.2026
+* Add stubs for Flutter APIs added after 3.41 (`displayCornerRadii`, `onHitTest`) so bindings compile on 3.47
+
 ## [1.0.1] - 31.01.2026
 * Add hack to support a range of Flutter SDK versions from 3.29 to 3.41.6
 
