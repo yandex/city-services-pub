@@ -243,3 +243,23 @@ the same **`mutate`** pipeline, so behavior stays consistent when called from do
 
 - [yx_navigation_flutter](https://pub.dev/packages/yx_navigation_flutter) — Flutter bindings and UI
 - [yx_scope](https://pub.dev/packages/yx_scope), [yx_state](https://pub.dev/packages/yx_state) — sibling libraries in **yx_architecture**
+
+## Agent skill
+
+This package ships an [Agent Skill](https://agentskills.io/specification) called
+`yx-navigation-fundamentals`: the rules an AI coding agent needs to write and review yx_navigation
+code. It lives in `skills/` inside the package, so any project that has `yx_navigation` as a direct
+dependency can install it:
+
+```
+fvm dart run skills@ get --agent <claude|codex|cursor|copilot|cline|opencode|antigravity|generic>
+```
+
+The command comes from the [Dart skills CLI](https://dart.dev/ai/package-skills)
+([announcement](https://dart.dev/blog/skills-cli-1-0-bundle-and-distribute-ai-agent-skills-for-your-packages))
+and needs version 1.0 or newer of that CLI. Only direct dependencies are scanned: an app that
+depends on `yx_navigation_flutter` alone has to add `yx_navigation` to its `pubspec.yaml` as well to
+receive the skill.
+
+The architecture canon that ties yx_scope, yx_state and yx_navigation together is a separate skill,
+[yx_architecture](https://github.com/yandex/city-services-pub/tree/main/yx_architecture).

@@ -1,6 +1,6 @@
 name: yx_navigation
 description: Dart core for declarative navigation — route tree state, mutations, guards, and URI serialization.
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/yandex/city-services-pub/tree/main/yx_navigation/packages/yx_navigation
 issue_tracker: https://github.com/yandex/city-services-pub/issues
 topics:

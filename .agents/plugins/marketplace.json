@@ -1,0 +1,22 @@
+{
+  "name": "city-services-pub",
+  "interface": {
+    "displayName": "Yandex City Services"
+  },
+  "plugins": [
+    {
+      "name": "yx-architecture",
+      "source": {
+        "source": "local",
+        "path": "./yx_architecture"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools",
+      "description": "Architecture canon for Flutter apps built on yx_scope, yx_state and yx_navigation: layer rules, Data-Domain boundaries, the ViewModel contract, embeddable feature-facade contracts, and three review and planning procedures. The API of each package is covered by the skill that ships inside that package.",
+      "version": "1.0.0"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+# Miscellaneous
+*.log
+*.swp
+.DS_Store
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Eval runs write reports and transcripts here.
+evals/results/
+.eval-runs/
+__pycache__/
+
+# Arcadia-only ignore files, not needed in the GitHub mirror.
+.arcignore
+.clineignore
+.cursorignore
+.rooignore

@@ -1,0 +1,56 @@
+{
+  "name": "yx-architecture",
+  "version": "1.0.0",
+  "description": "Architecture canon for Flutter apps built on yx_scope, yx_state and yx_navigation: layer rules, Data-Domain boundaries, the ViewModel contract, embeddable feature-facade contracts, and three review and planning procedures. The API of each package is covered by the skill that ships inside that package.",
+  "author": {
+    "name": "Yandex City Services",
+    "url": "https://github.com/yandex/city-services-pub"
+  },
+  "homepage": "https://github.com/yandex/city-services-pub/tree/main/yx_architecture",
+  "repository": "https://github.com/yandex/city-services-pub",
+  "license": "MIT",
+  "keywords": [
+    "flutter",
+    "dart",
+    "mobile",
+    "architecture",
+    "layered-architecture",
+    "clean-architecture",
+    "feature-modules",
+    "dependency-injection",
+    "di",
+    "scopes",
+    "state-management",
+    "view-model",
+    "mvvm",
+    "navigation",
+    "declarative-navigation",
+    "router",
+    "navigator-2",
+    "deep-links",
+    "yx-scope",
+    "yx-state",
+    "yx-navigation",
+    "yandex",
+    "claude-code",
+    "codex",
+    "skill",
+    "plugin",
+    "ai-agent",
+    "code-review",
+    "antipatterns",
+    "best-practices"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "yx_architecture",
+    "shortDescription": "Architecture canon for Flutter apps built on the yx stack.",
+    "longDescription": "Layer rules, Data-Domain boundaries, ViewModel contracts and embeddable feature-facade contracts for applications built on yx_scope, yx_state and yx_navigation, plus commands to review code, plan a feature and design a feature facade.",
+    "developerName": "Yandex City Services",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Skills"
+    ],
+    "websiteURL": "https://github.com/yandex/city-services-pub"
+  }
+}

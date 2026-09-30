@@ -1,6 +1,6 @@
 name: yx_state
 description: A state management library for Dart/Flutter applications.
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/yandex/city-services-pub/tree/main/yx_state/packages/yx_state
 issue_tracker: https://github.com/yandex/city-services-pub/issues
 topics:
