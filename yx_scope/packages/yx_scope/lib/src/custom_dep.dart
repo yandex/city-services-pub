@@ -81,6 +81,7 @@ abstract class CustomDep<Value> extends Dep<Value> {
 ///         },
 ///       );
 /// }
+/// ```
 ///
 /// You can also pass a custom behavior to the dependency.
 ///

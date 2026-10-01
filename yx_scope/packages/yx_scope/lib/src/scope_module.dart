@@ -4,6 +4,7 @@ part of 'base_scope_container.dart';
 ///
 /// For example we want to extract all monitoring entities into a separate feature:
 ///
+/// ```dart
 /// class SomeScopeContainer extends ScopeContainer {
 ///   // We declare [ScopeModule] inside it's [ScopeContainer]
 ///   late final monitorScopeModule = MonitorScopeModule(this);
@@ -20,6 +21,7 @@ part of 'base_scope_container.dart';
 ///
 ///   late final loggerDep = dep(() => Logger());
 /// }
+/// ```
 abstract class ScopeModule<Container extends BaseScopeContainer> {
   final Container container;
 

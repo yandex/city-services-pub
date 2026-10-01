@@ -122,7 +122,7 @@ abstract class BaseScopeContainer extends Scope {
   /// late final dependentManagerDep = dep(() => DependentManager(someManagerDep.get));
   /// ```
   /// In this example DependentManager depends on SomeManager. So we access
-  /// SomeManager via Dep<SomeManager> and pass an actual instance
+  /// SomeManager via [Dep<SomeManager>] and pass an actual instance
   /// of the SomeManager inside DependentManager.
   ///
   /// [name] parameter can be ignored unless you want to see distinguish

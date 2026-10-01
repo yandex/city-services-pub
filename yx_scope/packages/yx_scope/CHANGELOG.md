@@ -1,4 +1,5 @@
-**1.2.1 - unpublished**
+## 1.2.1 - 2026.10.01
+
 * Added ScopeHolderBehavior
 * Added release-safe scope diagnostics and the `no_runtimeType_toString` lint
 * Added the `yx-scope-fundamentals` agent skill under `skills/`
