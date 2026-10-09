@@ -25,9 +25,23 @@ To extend the coverage, implement a `CustomRoutePageFactoryResolver` (`hasResolv
 ```dart
 config = schema.build(
   debugConfiguration: NavigationDebugConfiguration(
-    debugPanelModeNotifier: DebugPanelModeNotifier(enableDebugPanel: true),
+    debugPanelModeNotifier: DebugPanelModeNotifier(
+      enableDebugPanel: kDebugMode,
+      isInitiallyVisible: true, // expanded on start instead of a collapsed button
+    ),
+    // fullscreen, the default, covers the app; a split layout keeps it usable
+    defaultDisplayType: DebugPanelDisplayType.splitTrailing,
   ),
 );
 ```
 
 It shows the `RouteNode` tree with `arguments` and `extra`, the active route at every nesting level, the serialized state, and the mutation history. Indispensable when debugging tabs, nested schemes, and the compatibility layer.
+
+| `DebugPanelDisplayType` | Layout |
+|---|---|
+| `fullscreen` (default) | the panel covers the app |
+| `splitLeading` / `splitTrailing` | the panel and the app side by side |
+| `splitTop` / `splitBottom` | the panel above or below the app |
+| `overlayLeading` / `overlayTrailing` | the panel over the app, at an edge |
+
+Do not combine `isInitiallyVisible: true` with the default `fullscreen`: the app starts hidden behind the panel.

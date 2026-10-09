@@ -1,3 +1,7 @@
+## 1.2.2 - 2026.10.09
+
+* Improved the `yx-scope-fundamentals` agent skill: a recipe for a child scope owned by a widget
+
 ## 1.2.1 - 2026.10.01
 
 * Added ScopeHolderBehavior

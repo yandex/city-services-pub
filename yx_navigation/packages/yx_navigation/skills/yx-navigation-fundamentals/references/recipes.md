@@ -68,6 +68,22 @@ final homeDeclaration = RouteDeclaration.indexedStack(
 );
 ```
 
+The active tab is the **last** child of the IndexedStack node (`activeRoute` reads `children.last`). If `initialNodeBuilder` creates the node without children, `RouteDeclaration.indexedStack` adds the tabs in declaration order, so the app starts on the last declared tab and the `?? HomeRoutes.map` fallback above never applies. To choose the starting tab, list every tab and put that one last: a tab left out is appended after it.
+
+```dart
+@override
+RouteNode initialNodeBuilder(MutableRouteNode node) => node
+  ..setChildren([
+    HomeRoutes.root.toNode(
+      children: [
+        HomeRoutes.messages.toNode(),
+        HomeRoutes.profile.toNode(),
+        HomeRoutes.map.toNode(), // the last child is the active tab
+      ],
+    ),
+  ]);
+```
+
 ## Recipe: a nested feature module
 
 ```dart

@@ -5,11 +5,13 @@
 Monitors the lifecycle of every state manager: `onChange`, `onError`, `onHandleStart`, `onHandleDone`.
 
 ```dart
+import 'package:flutter/foundation.dart';
+
 class LoggingObserver extends StateManagerObserver {
   const LoggingObserver();
   @override
   void onChange(StateManagerBase<Object?> sm, Object? cur, Object? next, Object? id) {
-    log('${sm.runtimeType}[$id]: $cur -> $next');
+    debugPrint('${sm.runtimeType}[$id]: $cur -> $next');
     super.onChange(sm, cur, next, id);
   }
   // onError, onHandleStart and onHandleDone work the same way
@@ -18,6 +20,8 @@ class LoggingObserver extends StateManagerObserver {
 // register it once at startup
 StateManagerOverrides.observer = const LoggingObserver();
 ```
+
+`debugPrint` prints to the `flutter run` terminal and the IDE console. `log()` from `dart:developer` does not reach the terminal: it goes to the VM logging stream that DevTools shows. In pure Dart, use `print`.
 
 ## The local observer methods of a StateManager
 

@@ -40,6 +40,26 @@ Future<void> dispose() => manager.close();                   // close
 With [yx_scope](https://pub.dev/packages/yx_scope) this is a `rawAsyncDep` with a `dispose` callback
 and an entry in `initializeQueue`; the `yx-scope-fundamentals` skill shows the exact shape.
 
+A widget that renders the state and triggers actions gets two narrow views of one manager:
+`StateReadable<T>` for rendering and a command interface for actions.
+
+```dart
+abstract interface class OrderCommands {
+  Future<void> refresh();
+}
+
+class OrderStateManager extends StateManager<OrderState> implements OrderCommands {
+  // ...
+}
+
+// the owner hands out both views, the widget never sees handle() or close()
+StateReadable<OrderState> get orderState => manager;
+OrderCommands get orderCommands => manager;
+```
+
+This includes the root widget: without a DI container, `main` owns the manager and passes both
+views to the app widget.
+
 ## Antipatterns
 
 | # | Antipattern | Why |

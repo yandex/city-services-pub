@@ -16,6 +16,8 @@ Root
     `-- Profile (the active tab)
 ```
 
+The last child of an IndexedStack node is the active tab; [recipes.md](recipes.md) shows how to set the starting one.
+
 Every `push` and `pop` is a tree mutation. A screen cannot be opened outside the tree. This is what enables full serialization into a URI, mutation of inactive branches, and reactivity through the `stream` and `state` of `RouteNodeReadable`.
 
 ## The main entities

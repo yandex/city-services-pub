@@ -138,3 +138,45 @@ class _AppState extends State<App> {
   }
 }
 ```
+
+## Recipe: a child scope bound to a widget
+
+Until navigation exists, the page that uses a child scope owns it. The page receives the parent interface, never a holder.
+
+```dart
+class OrdersPage extends StatefulWidget {
+  const OrdersPage({super.key, required this.parent});
+
+  final OrdersScopeParent parent; // the parent interface, not a holder
+
+  @override
+  State<OrdersPage> createState() => _OrdersPageState();
+}
+
+class _OrdersPageState extends State<OrdersPage> {
+  late final _holder = OrdersScopeHolder(widget.parent);
+
+  @override
+  void initState() {
+    super.initState();
+    _holder.create();
+  }
+
+  @override
+  void dispose() {
+    _holder.drop();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => ScopeProvider<OrdersScope>(
+        holder: _holder,
+        child: ScopeBuilder<OrdersScope>.withPlaceholder(
+          builder: (context, scope) => OrdersList(orders: scope.ordersState),
+          placeholder: const Center(child: CircularProgressIndicator()),
+        ),
+      );
+}
+```
+
+With navigation, `create()` and `drop()` move to the route that opens the page (principle 5).
