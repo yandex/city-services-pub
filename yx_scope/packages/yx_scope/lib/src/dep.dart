@@ -150,10 +150,29 @@ class CoreDepBehavior<V, D extends Dep<V>> extends DepBehavior<V, D> {
 class CoreAsyncDepBehavior<V, D extends AsyncDep<V>>
     extends CoreDepBehavior<V, D> implements AsyncDepBehavior<V, D> {
   var _initialized = false;
+  final Future<V> Function()? _asyncBuilder;
+
+  CoreAsyncDepBehavior({Future<V> Function()? asyncBuilder})
+      : _asyncBuilder = asyncBuilder;
+
   @override
   Future<void> init(AsyncDepAccess<V, D> access) async {
-    final value = super.getValue(access);
     try {
+      final V value;
+      if (_asyncBuilder != null) {
+        access.observer?.onValueStartCreate(access.dep);
+        try {
+          value = await _asyncBuilder!();
+          _value = _DepValue(value);
+          access.observer?.onValueCreated(access.dep, value);
+        } on Object catch (e, s) {
+          access.observer?.onValueCreateFailed(access.dep, e, s);
+          rethrow;
+        }
+      } else {
+        value = super.getValue(access);
+      }
+
       access.asyncDepObserver?.onDepStartInitialize(access.dep);
       await access.initCallback(value);
       _initialized = true;
